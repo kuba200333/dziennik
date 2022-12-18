@@ -1,0 +1,141 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+    font-family: sans-serif;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-size: 15px;
+
+}
+body{
+    padding: 0;
+    margin: 0;
+    background-color: #C3C3C3;
+
+}
+#kontener {
+    height: 100vh;
+}
+#naglowek1{
+    width: 50%;
+    top: 0;
+    left: 0;
+    padding: 0 3rem;
+    background-color: #1F2232;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 15%;
+    float: left;
+    color: white;
+}
+#naglowek1 a{
+    color: white;
+}
+#naglowek2{
+    width: 50%;
+    top: 0;
+    left: 0;
+    padding: 0 3rem;
+    background-color: #1F2232;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 15%;
+    float: right;
+    color: white;
+}
+#wybierz{
+    clear: both;
+    padding: 10px;
+    height: 15%;
+    width: 100%;
+    background-color: rgb(216, 205, 172);
+    border: 1px solid white;
+
+}
+
+#glowny1{
+    
+    height: 60%;
+    width: 50%;
+    background-color: rgb(216, 205, 172);
+    float: left;
+    padding: 10px;
+    border: 1px solid white;
+    overflow: auto;
+    text-align: center;
+
+}
+#glowny2{
+    padding: 10px;
+    height: 60%;
+    width: 50%;
+    background-color: rgb(216, 205, 172);
+    float: left;
+    border: 1px solid white;
+    overflow: auto;
+    text-align: center;
+    
+}
+#stopka{
+    clear: both;
+    height: 10%;
+    top: 0;
+    left: 0;
+    padding: 0 3rem;
+    background-color: #1F2232;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+
+}
+
+#glowny1 table{
+    width: 100%;
+    border: 1px solid white;
+    border-collapse: collapse;
+
+    color: #1F2232;
+
+    
+}
+#glowny2 table{
+    width: 100%;
+    border: 1px solid white;
+    border-collapse: collapse;
+
+    color: #1F2232;
+    
+}
+
+
+td{
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+    color: #1F2232;
+    padding: 3px;
+}
+th{
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+    color: #1F2232;
+    padding: 10px;
+}
+.srodek{
+    text-align: center;
+}
+h1{
+    text-align: center;
+    
+}
+#stopka a{
+    color: white;
+}
+#add{
+    text-align: center;
+    color: red;
+}
