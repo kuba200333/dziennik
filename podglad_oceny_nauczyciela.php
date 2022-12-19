@@ -44,7 +44,7 @@ if (!isset($_SESSION['zalogowany'])){
     
                 $id_klasy=$_SESSION['id_klasy'];
                 $id_przedmiot=$_SESSION['id_przedmiot'];
-                }
+            }
 
             
             echo "<br>";
@@ -105,8 +105,31 @@ if (!isset($_SESSION['zalogowany'])){
 
             echo "<h3>Semestr 1</h3>";
 
-            echo "<br>";
-    
+            $zapytanie3="SELECT id_ucznia FROM uczniowie where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)='$uczen';";
+            $wyslij3=mysqli_query($polaczenie,$zapytanie3);
+            while($row3=mysqli_fetch_array($wyslij3)){
+                $id_ucznia=$row3[0];
+            }
+
+            $zapytanie4="SELECT count(*) from frekwencja where id_przedmiot=$id_przedmiot and id_ucznia=$id_ucznia and typ_ob in('zw','sp','ob') and semestr=1;";
+
+            
+            $wyslij4=mysqli_query($polaczenie,$zapytanie4);
+            while($row4=mysqli_fetch_array($wyslij4)){
+                $obecnosc=$row4[0];
+            }
+
+            $zapytanie5="SELECT count(*) from frekwencja where id_przedmiot=$id_przedmiot and id_ucznia=$id_ucznia and typ_ob in('u','nb') and semestr=1;";
+
+            $wyslij5=mysqli_query($polaczenie,$zapytanie5);
+            while($row5=mysqli_fetch_array($wyslij5)){
+                $nieobecnosc=$row5[0];
+            }
+            if($nieobecnosc+$obecnosc==0){
+                echo"<br><b>Frekwencja:</b> 0%<br>";
+            }else{
+                echo "<br><b>Frekwencja:</b> ".round(($obecnosc/($nieobecnosc+$obecnosc)*100),2)."%<br>";
+            }
             
             $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
             $zapytanie1="SELECT oceny.id_oceny as id_oceny, oceny.ocena as ocena, kategorie_ocen.skrót_kategorii as kategoria, kategorie_ocen.nazwa_kategorii as nazwa_kategorii, concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as dodal, oceny.komentarz as komentarz, oceny.data as data, nauczyciele.login, oceny.waga as waga, kategorie_ocen.kolor as kolor from oceny 
@@ -133,6 +156,7 @@ if (!isset($_SESSION['zalogowany'])){
                         echo $row2[0];
                     }
                 }
+
                 echo "<table>";
                 echo "<tr><th>ocena</th><th>kategoria</th><th>waga</th><th>Komentarz</th><th>data</th><th>dodał</th><th>usuń</th></tr>";
                 while($row1=mysqli_fetch_array($wyslij1)){
@@ -201,14 +225,38 @@ if (!isset($_SESSION['zalogowany'])){
             $id_przedmiotu=@$_POST['id_przedmiot'];
 
             echo "<h3>Semestr 2</h3>";
-
-            echo "<br>";
     
             
             $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
             $zapytanie1="SELECT oceny.id_oceny as id_oceny, oceny.ocena as ocena, kategorie_ocen.skrót_kategorii as kategoria, kategorie_ocen.nazwa_kategorii as nazwa_kategorii, concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as dodal, oceny.komentarz as komentarz, oceny.data as data, nauczyciele.login, oceny.waga as waga, kategorie_ocen.kolor as kolor  from oceny 
             inner join przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie on oceny.id_ucznia=uczniowie.id_ucznia inner join kategorie_ocen on oceny.id_kategorii=kategorie_ocen.id_kategorii 
             inner join nauczyciele on oceny.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.id_przedmiotu='$id_przedmiotu' and semestr=2 order by data asc;";
+
+            $zapytanie3="SELECT id_ucznia FROM uczniowie where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)='$uczen';";
+            $wyslij3=mysqli_query($polaczenie,$zapytanie3);
+            while($row3=mysqli_fetch_array($wyslij3)){
+                $id_ucznia=$row3[0];
+            }
+
+            $zapytanie4="SELECT count(*) from frekwencja where id_przedmiot=$id_przedmiot and id_ucznia=$id_ucznia and typ_ob in('zw','sp','ob') and semestr=2;";
+
+
+            $wyslij4=mysqli_query($polaczenie,$zapytanie4);
+            while($row4=mysqli_fetch_array($wyslij4)){
+                $obecnosc=$row4[0];
+            }
+
+            $zapytanie5="SELECT count(*) from frekwencja where id_przedmiot=$id_przedmiot and id_ucznia=$id_ucznia and typ_ob in('u','nb') and semestr=2;";
+
+            $wyslij5=mysqli_query($polaczenie,$zapytanie5);
+            while($row5=mysqli_fetch_array($wyslij5)){
+                $nieobecnosc=$row5[0];
+            }
+            if($nieobecnosc+$obecnosc==0){
+                echo"<br><b>Frekwencja:</b> 0%<br>";
+            }else{
+                echo "<br><b>Frekwencja:</b> ".round(($obecnosc/($nieobecnosc+$obecnosc)*100),2)."%<br>";
+            }
 
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
             if ($wyslij1->num_rows>0){
@@ -230,6 +278,7 @@ if (!isset($_SESSION['zalogowany'])){
                         echo $row2[0];
                     }
                 }
+
             echo "<table>";
             echo "<tr><th>ocena</th><th>kategoria</th><th>waga</th><th>Komentarz</th><th>data</th><th>dodał</th><th>usuń</th></tr>";
             while($row1=mysqli_fetch_array($wyslij1)){

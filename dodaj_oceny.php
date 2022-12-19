@@ -181,7 +181,6 @@ if (!isset($_SESSION['zalogowany'])){
             
             </td></tr>
 
-            </td></tr>
 
             
             END;

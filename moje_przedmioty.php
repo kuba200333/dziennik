@@ -34,10 +34,13 @@ if (!isset($_SESSION['zalogowany'])){
                 inner join przedmioty p on p.id_przedmiotu=n.id_przedmiot inner join nauczyciele na on na.id_nauczyciela=n.id_nauczyciel where na.login='$login' order by k.nazwa_klasy asc;";
                 $wyslij=mysqli_query($polaczenie,$zapytanie);
                 echo "<table>
-                <tr><th>klasa</th><th>przedmiot</th><th>wybierz</th></tr>
+                <tr><th>klasa</th><th>przedmiot</th><th>oceny</th><th>oceny seryjnie</th><th>Frekwencja</th></tr>
                 ";
                 while($row=mysqli_fetch_array($wyslij)){
-                    echo "<tr><td>".$row[0]."</td><td>".$row[1]."</td><td class='usuwanie'><form action='podglad_oceny_nauczyciela.php' method='post'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td></tr>";
+                    echo "<tr><td>".$row[0]."</td><td>".$row[1]."</td><td class='usuwanie'><form action='podglad_oceny_nauczyciela.php' method='post'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
+                    <td class='usuwanie'><form action='seryjne_oceny.php' method='post'><input type='hidden' name='klasa' value='".$row[0]."'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
+                    <td class='usuwanie'><form action='obecnosc.php' method='post'><input type='hidden' name='klasa' value='".$row[0]."'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
+                    </tr>";
                 }
                 echo "</table>";
            ?>
