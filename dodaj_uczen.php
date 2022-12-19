@@ -32,7 +32,7 @@ if ($_SESSION['login']!='admin'){
 
     $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
 
-    $zapytanie = "SELECT * FROM klasy order by skrot_klasy;";
+    $zapytanie = "SELECT * FROM klasy where wirt=0 order by skrot_klasy;";
     $wyslij = mysqli_query($polaczenie,$zapytanie);
 
     echo "<td class='kolumna2'>";
@@ -52,9 +52,11 @@ if ($_SESSION['login']!='admin'){
 
     if(!empty($_POST['nazwisko_ucznia'])||!empty($_POST['skrot_klasy']))
     {  
-    $imie_ucznia= $_POST['imie_ucznia'];
-    $nazwisko_ucznia= $_POST['nazwisko_ucznia'];
+
     $skrot_klasy= $_POST['skrot_klasy'];
+
+    $i=str_replace(" ","",$imie_ucznia= $_POST['imie_ucznia']);
+    $n=str_replace(" ","",$nazwisko_ucznia= $_POST['nazwisko_ucznia']);
 
     $zapytanie2="SELECT id_klasy from klasy where skrot_klasy='".$skrot_klasy."';";
     $wyslij2=mysqli_query($polaczenie,$zapytanie2);
@@ -63,7 +65,7 @@ if ($_SESSION['login']!='admin'){
         $id_klasy=$row2['id_klasy'];
     }
 
-    $zapytanie3="INSERT INTO uczniowie(id_ucznia, imie_ucznia, nazwisko_ucznia, id_klasy, funkcja) VALUES ('','$imie_ucznia','$nazwisko_ucznia','$id_klasy',4)";
+    $zapytanie3="INSERT INTO uczniowie(id_ucznia, imie_ucznia, nazwisko_ucznia, id_klasy, funkcja) VALUES ('','$i','$n','$id_klasy',4)";
 
     
     $wyslij2=mysqli_query($polaczenie,$zapytanie3);

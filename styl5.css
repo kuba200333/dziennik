@@ -25,7 +25,7 @@ body{
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    height: 20%;
+    height: 15%;
     float: left;
     color: white;
 }
@@ -42,7 +42,7 @@ body{
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    height: 20%;
+    height: 15%;
     float: right;
     color: white;
 }
@@ -58,7 +58,7 @@ body{
 
 #glowny{
     
-    height: 50%;
+    height: 65%;
     width: 100%;
     background-color: rgb(216, 205, 172);
     float: left;
@@ -71,7 +71,7 @@ body{
 
 #stopka{
     clear: both;
-    height: 20%;
+    height: 10%;
     top: 0;
     left: 0;
     padding: 0 3rem;
@@ -85,13 +85,13 @@ body{
 }
 
 #glowny table{
-    width: 90%;
+    width: 70%;
     margin: 3%;
     border: 1px solid rgb(0, 0, 0);
     border-collapse: collapse;
     background-color: rgb(216, 205, 172);
     color: #1F2232;
-
+    margin: 0 auto;
     
 }
 
@@ -124,4 +124,7 @@ h1{
 #add{
     text-align: center;
     color: red;
+}
+#stopka a{
+    color: white;
 }

@@ -80,16 +80,17 @@ if (!isset($_SESSION['zalogowany'])){
         </table><br>";
 
         echo "<table>
-        <tr><th>uczen</th></tr>";
+        <tr><th>lp.</th><th>uczen</th><th>ocena</th></tr>";
         require "connect.php";
 
         $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
         $id_klasy=$_POST['id_klasy'];
         $id_przedmiot=$_POST['id_przedmiot'];
-        $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen, id_klasy FROM `uczniowie` where id_klasy=$id_klasy order by uczen asc;";
+        $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM uczniowie where id_klasy=$id_klasy UNION SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM wirtualne_klasy where id_klasy=$id_klasy ORDER BY uczen ASC;";
         $wyslij=mysqli_query($polaczenie,$zapytanie);
+        $x=1;
         while($row=mysqli_fetch_array($wyslij)){
-            echo '<tr id="'.$row[0].'"><td style="text-align:left;">'.$row[1]."</td><td>
+            echo '<tr id="'.$row[0].'"><td>'.$x++.'.</td><td style="text-align:left;">'.$row['uczen']."</td><td>
             <input list='oceny' name='ocena[".$row[0]."]'>
             <datalist id='oceny' required>
                 <option>1</option>
@@ -122,7 +123,7 @@ if (!isset($_SESSION['zalogowany'])){
             $id_przedmiot=$_POST['id_przedmiot'];
             $kategoria=$_POST['kategoria'];
 
-            $tab=$_POST['ocena'];
+            print_r ($tab=$_POST['ocena']);
             $data=$_POST['data'];
             $komentarz=$_POST['komentarz'];
             $login=$_SESSION['login'];

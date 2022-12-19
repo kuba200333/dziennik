@@ -50,8 +50,8 @@ if (!isset($_SESSION['zalogowany'])){
             echo "<br>";
     
 
-            $zapytanie10="SELECT concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia) as uczen FROM uczniowie where id_klasy=$id_klasy order by concat(nazwisko_ucznia, ' ', imie_ucznia) asc;";
-            
+            $zapytanie10="SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM uczniowie where id_klasy=$id_klasy UNION SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM wirtualne_klasy where id_klasy=$id_klasy order by uczen asc;";
+
                 $wyslij10=mysqli_query($polaczenie,$zapytanie10);  
 
             

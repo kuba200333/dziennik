@@ -69,7 +69,7 @@ if (!isset($_SESSION['zalogowany'])){
         </table><br>";
 
         echo "<table>
-        <tr><th rowspan='2'>uczen</th><th>ob</th><th>nb</th><th>u</th><th>zw</th><th>sp</th></tr>
+        <tr><th rowspan='3'>lp.</th><th rowspan='3'>uczen</th><th>ob</th><th>nb</th><th>u</th><th>zw</th><th>sp</th></tr>
         <tr><td class='wyglad'><input type='radio' name='all' onclick='allob()'></td><td class='wyglad'><input type='radio' name='all' onclick='allnb()'></td><td class='wyglad'><input type='radio' name='all' onclick='allu()'></td><td class='wyglad'><input type='radio' name='all'  onclick='allzw()'></td>
         <td class='wyglad'><input type='radio' name='all' onclick='allsp()'></td></tr>";
         require "connect.php";
@@ -77,20 +77,22 @@ if (!isset($_SESSION['zalogowany'])){
         $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
         $id_klasy=$_POST['id_klasy'];
         $id_przedmiot=$_POST['id_przedmiot'];
-        $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen, id_klasy FROM `uczniowie` where id_klasy=$id_klasy order by uczen asc;";
+        $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen from uczniowie where id_klasy=$id_klasy UNION SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen from wirtualne_klasy where id_klasy=$id_klasy;";
+
         $wyslij=mysqli_query($polaczenie,$zapytanie);
         echo "<tr style='background-color: silver;' class='suma'>
-        <td style='text-align:right;'>Suma:</td> <td class='obSum'>0</td><td class='nbSum'>0</td><td class='uSum'>0</td>
+         <td class='obSum'>0</td><td class='nbSum'>0</td><td class='uSum'>0</td>
         <td class='zwSum'>0</td><td class='spSum'>0</td></tr>
         ";
+        $x=1;
         while($row=mysqli_fetch_array($wyslij)){
-            echo '<tr id="'.$row[0].'"><td style="text-align:left;">'.$row[1].'<input type="hidden" name="uczen['.$row[0].']"  value="'.$row[0].'"><input type="hidden" name="id_przedmiot" value="'.$id_przedmiot.'"></td>
+            echo '<tr id="'.$row[0].'"><td>'.$x++.'.</td><td style="text-align:left;">'.$row['uczen'].'<input type="hidden" name="uczen['.$row[0].']"  value="'.$row[0].'"><input type="hidden" name="id_przedmiot" value="'.$id_przedmiot.'"></td>
             <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="obecnosc" value="ob"></td><td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="niebecnosc" value="nb"></td>
             <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="usprawiedliwione" value="u"></td>
             <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="zwolniony" value="zw"></td><td class="wyglad"><input type="radio" name="frekwencja['.$row[0].']" id="spoznienie" value="sp"></td></tr>';
         }
         echo "<tr style='background-color: silver;' class='suma'>
-        <td style='text-align:right;'>Suma:</td> <td class='obSum'>0</td><td class='nbSum'>0</td><td class='uSum'>0</td>
+        <td colspan='2' style='text-align:right;'>Suma:</td> <td class='obSum'>0</td><td class='nbSum'>0</td><td class='uSum'>0</td>
         <td class='zwSum'>0</td><td class='spSum'>0</td></tr>
         ";
         echo "</table>";
