@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `testowa`
+-- Baza danych: `dziennik`
 --
 
 -- --------------------------------------------------------
@@ -42,7 +42,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id_nauczyciela`, `imie`, `nazwisko`, `login`, `email`, `haslo`, `kod_odzyskania`) VALUES
-(0, 'admin', 'admin', 'admin', 'kuba.wiercinski2003@gmail.com', '$2y$10$GYmVbfcCHw1Eq3WidhhRaexjb4R3hkbiT8MdQ1QBRhbW9fWmwtb6a', 274371);
+(0, 'admin', 'admin', 'admin', 'admin@wp.pl', '$2y$10$GYmVbfcCHw1Eq3WidhhRaexjb4R3hkbiT8MdQ1QBRhbW9fWmwtb6a', 274371);
 
 -- --------------------------------------------------------
 
