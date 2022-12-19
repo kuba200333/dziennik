@@ -82,8 +82,8 @@
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username= 'login'; //email
-        $mail->Password= 'haslo'; // hasło
+        $mail->Username= 'dziennik.odzyskaj.haslo@gmail.com'; //email
+        $mail->Password= 'deggvithnnvdvyre'; // hasło
         $mail->SMTPSecure = 'ssl';
         $mail->Port= 465;
 
@@ -91,7 +91,7 @@
         $mail->CharSet = "UTF-8";
         $mail->setLanguage('pl', '/phpmailer/language');
 
-        $mail->setFrom('twoj_email', 'Dziennik- reset hasła'); //email moj
+        $mail->setFrom('kuba.wiercinski2003@gmail.com', 'Dziennik- reset hasła'); //email moj
 
     
 

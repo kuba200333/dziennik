@@ -21,7 +21,7 @@ if ($_SESSION['login']!='admin'){
     <div class="kontener">
         <form action="" method="post">
 
-        <h4 class="inside">Dodaj klase</h4>
+        <h4 class="inside">Dodaj wirtualną klase</h4>
         <table>
         <tr><td class='kolumna3' colspan="2"></td></tr>
             <tr><td class='kolumna1'>Nazwa klasy: </td><td class='kolumna2'><input name="nazwa_klasy" type="text" required></td></tr>
@@ -38,17 +38,6 @@ if ($_SESSION['login']!='admin'){
 
         $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
 
-        $zapytanie = "SELECT id_nauczyciela, concat(nazwisko,' ', imie) as nauczyciel FROM `nauczyciele` order by nauczyciel asc;";
-        $wyslij=mysqli_query($polaczenie,$zapytanie);
-
-        echo "<tr><td class='kolumna1'>Wychowawca:</td><td class='kolumna2'>";
-        echo "<select name='nauczyciel' required>";
-        echo "<option value=''</option>";
-        while($row=mysqli_fetch_array($wyslij)){
-
-            echo "<option value='".$row['nauczyciel']."'>".$row['nauczyciel']."</option>";
-        }
-        echo('</select></td></tr>');
         echo <<<END
         <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr></table>
         END;
@@ -57,18 +46,12 @@ if ($_SESSION['login']!='admin'){
 
         if(!empty($_POST['nazwa_klasy'])||!empty($_POST['skrot_klasy']))
         {
-        $zapytanie1="SELECT id_nauczyciela from nauczyciele where concat(nazwisko,' ', imie)='".$nauczyciel."';";
-        $wyslij1=mysqli_query($polaczenie,$zapytanie1);
-        
-        while($row1=mysqli_fetch_array($wyslij1)){
-            $id_nauczyciela=$row1['id_nauczyciela'];
-        }
-
-        @$wynik="INSERT INTO klasy(id_klasy, nazwa_klasy, skrot_klasy, id_nauczyciela) VALUES ('','$nazwa_klasy','$skrot_klasy', '$id_nauczyciela')";
+     
+        @$wynik="INSERT INTO klasy(id_klasy, nazwa_klasy, skrot_klasy, wirt) VALUES (null,'$nazwa_klasy','$skrot_klasy', 1)";
         
         $wyslij_wynik=mysqli_query($polaczenie,$wynik);
 
-            echo "<p id='add'>Dodano klasę!</p>";
+            echo "<p id='add'>Dodano wirtualną klasę!</p>";
         }
    
         

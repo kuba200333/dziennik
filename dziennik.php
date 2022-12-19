@@ -58,6 +58,20 @@ if (!isset($_SESSION['zalogowany'])){
             END;
             }
             ?>
+            <?php
+            if($_SESSION['login']=='admin'){
+                echo <<<END
+            <div id="zawijaj">
+                <a>Wirtualne klasy</a>
+                <ul>
+                    <li><a href="\dziennik_lekcyjny\podglad_uczniowie_wirtualna.php">Klasy wirtualne i uczniowie</a></li>
+                    <li><a href="\dziennik_lekcyjny\dodaj_wirt_klasa.php" onclick="window.open('dodaj_wirt_klasa.php', 'nazwa', 'menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=no,reszable=no,fullscreen=no,channelmode=no,width=350,height=250').focus(); return false">Dodaj wirtualną klase</a></li>
+                    <li><a href="\dziennik_lekcyjny\dodaj_dowirt.php" onclick="window.open('dodaj_dowirt.php', 'nazwa', 'menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=no,reszable=no,fullscreen=no,channelmode=no,width=350,height=250').focus(); return false">Dodaj ucznia do wirtualnej klasy</a></li>
+                </ul>
+            </div>
+            END;
+            }
+            ?>
             <div id="zawijaj">
                 <a>Ocenianie</a>
                 <ul>
@@ -79,6 +93,7 @@ if (!isset($_SESSION['zalogowany'])){
 
                 </ul>
             </div>
+            
             <a href="\dziennik_lekcyjny\podglad_statystyki.php">Statystyki</a>
         </div>
         

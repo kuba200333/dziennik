@@ -31,7 +31,7 @@ if (!isset($_SESSION['zalogowany'])){
                 require "connect.php";
 
                 $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
-                $zapytanie11="SELECT skrot_klasy FROM klasy;";
+                $zapytanie11="SELECT skrot_klasy FROM klasy where wirt=0 order by skrot_klasy asc;";
                 $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
             
                 echo "klasy: <select name='klasy' onchange='this.form.submit()'>";
