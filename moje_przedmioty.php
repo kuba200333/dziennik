@@ -10,7 +10,7 @@ if (!isset($_SESSION['zalogowany'])){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nauczyciele</title>
+    <title>Moje przedmioty</title>
     <link rel="stylesheet" href="styl7.css">
 </head>
 <body>
@@ -39,9 +39,9 @@ if (!isset($_SESSION['zalogowany'])){
                 ";
                 $x=1;
                 while($row=mysqli_fetch_array($wyslij)){
-                    echo "<tr><td style='text-align: right;'>".$x++.".</td><td>".$row[1]."</td><td>".$row[0]."</td><td class='usuwanie'><form action='podglad_oceny_nauczyciela.php' method='post'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='wybierz'></form></td>
-                    <td class='usuwanie'><form action='seryjne_oceny.php' method='post'><input type='hidden' name='klasa' value='".$row[0]."'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='wybierz'></form></td>
-                    <td class='usuwanie'><form action='obecnosc.php' method='post'><input type='hidden' name='klasa' value='".$row[0]."'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='wybierz'></form></td>
+                    echo "<tr><td style='text-align: right;'>".$x++.".</td><td>".$row[1]."</td><td>".$row[0]."</td><td class='usuwanie'><form action='podglad_oceny_nauczyciela.php' method='post'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
+                    <td class='usuwanie'><form action='seryjne_oceny.php' method='post'><input type='hidden' name='klasa' value='".$row[0]."'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='nazwa_przedmiotu' value='".$row[1]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
+                    <td class='usuwanie'><form action='obecnosc.php' method='post'><input type='hidden' name='klasa' value='".$row[0]."'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
                     </tr>";
                 }
                 echo "</table>";

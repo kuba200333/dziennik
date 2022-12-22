@@ -14,7 +14,7 @@ if (!isset($_SESSION['zalogowany'])){
     <title>Zachowanie uczniów</title>
     <link rel="stylesheet" href="styl6.css">
 </head>
-<body onload='kategorie()'>
+<body onload=kategorie()>
     <div id="kontener">
         <div id="naglowek1">
         <a href="\dziennik_lekcyjny\dziennik.php">Powrót do strony głównej <br></a>
@@ -101,9 +101,9 @@ if (!isset($_SESSION['zalogowany'])){
     
 
             $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
-            $zapytanie1="SELECT oceny_zachowanie.id_oceny as id_oceny, oceny_zachowanie.ocena as ocena, kategorie_ocen.skrót_kategorii as kategoria, kategorie_ocen.nazwa_kategorii as nazwa_kategorii, concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as dodal, oceny_zachowanie.komentarz as komentarz, oceny_zachowanie.data as data, nauczyciele.login as login from oceny_zachowanie 
-            inner join przedmioty on oceny_zachowanie.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie on oceny_zachowanie.id_ucznia=uczniowie.id_ucznia inner join kategorie_ocen on oceny_zachowanie.id_kategorii=kategorie_ocen.id_kategorii 
-            inner join nauczyciele on oceny_zachowanie.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.nazwa_przedmiotu='$przedmiot' and semestr=1 order by data asc;";
+            $zapytanie1="SELECT zachowanie_ucznia.id_oceny as id_oceny, zachowanie_ucznia.ocena as ocena, kategorie_ocen.skrót_kategorii as kategoria, kategorie_ocen.nazwa_kategorii as nazwa_kategorii, concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as dodal, zachowanie_ucznia.komentarz as komentarz, zachowanie_ucznia.data as data, nauczyciele.login as login from zachowanie_ucznia 
+            inner join przedmioty on zachowanie_ucznia.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie on zachowanie_ucznia.id_ucznia=uczniowie.id_ucznia inner join kategorie_ocen on zachowanie_ucznia.id_kategorii=kategorie_ocen.id_kategorii 
+            inner join nauczyciele on zachowanie_ucznia.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.nazwa_przedmiotu='$przedmiot' and semestr=1 order by data asc;";
     
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
             if ($wyslij1->num_rows>0){

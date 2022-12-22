@@ -29,7 +29,7 @@ if (!isset($_SESSION['zalogowany'])){
         <div id='wybierz'>
             <form action="" method="post">
             <?php
-                if(empty($_POST['klasy'])){
+                
                 require "connect.php";
 
                 $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
@@ -44,7 +44,7 @@ if (!isset($_SESSION['zalogowany'])){
                 echo "</select>";
                 mysqli_close($polaczenie);
                 echo "</form>";
-                }
+                
                 if(!empty($_POST['klasy'])){
                     echo "<p class='srodek'><b>Klasa: </b>".$_POST['klasy']."</p>";
                 }
@@ -67,14 +67,14 @@ if (!isset($_SESSION['zalogowany'])){
                         $wyslij=mysqli_query($polaczenie,$zapytanie);
                             if ($wyslij->num_rows>0){
                             echo "<tr><th>lp.</th><th>Nazwisko</th><th>Imie</th>";
-                            if($login=='admin'){
+                            if($_SESSION['admin'] ==1){
                             echo "<th>Usuń</th>";
                             }
                             echo"</tr>";
                             $x=1;
                             while($row=mysqli_fetch_array($wyslij)){
                                 echo"<tr><td style='text-align: right;'>".$x++.".</td><td>$row[1]</td><td>$row[2]</td>";
-                                if($login=='admin'){
+                                if($_SESSION['admin'] ==1){
                                 echo "<td class='usuwanie'><form action='' method='post'><input type='hidden' name='id_ucznia' value='".$row['id']."'><input type='submit' name='usun' value='X'></form></td>";
                                 }
                                 echo"</tr>";

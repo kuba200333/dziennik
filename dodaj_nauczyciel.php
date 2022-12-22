@@ -4,7 +4,7 @@ if (!isset($_SESSION['zalogowany'])){
     header("Location: index.php");
 }
 
-if ($_SESSION['login']!='admin'){
+if ($_SESSION['admin'] !=1){
     header("Location: dziennik.php");
 }
 ?>
@@ -29,6 +29,7 @@ if ($_SESSION['login']!='admin'){
             <tr><td class='kolumna1'>login:</td><td class='kolumna2'><input name="login" type="text"  required></td></tr>
             <tr><td class='kolumna1'>hasło:</td><td class='kolumna2'><input name="haslo" type="password"  required></td></tr>
             <tr><td class='kolumna1'>email:</td><td class='kolumna2'><input name="email" type="email"  required></td></tr>
+            <tr><td class='kolumna1'>uprawnienia admina:</td><td class='kolumna2'><input type='checkbox' name='admin'></td></tr>
             <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
         </form>
         </table>
@@ -45,13 +46,20 @@ if ($_SESSION['login']!='admin'){
                 $n=str_replace(" ","",$nazwisko= @$_POST['nazwisko']);
                 $haslo_hash= password_hash($haslo, PASSWORD_DEFAULT);
 
+                $admin=@$_POST['admin'];
+                if($admin=='on'){
+                    $admin=1;
+                }else{
+                    $admin=0;
+                }
+
                 require "connect.php";
 
                 $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
         
 
-                $sql="INSERT INTO nauczyciele(id_nauczyciela, imie, nazwisko, login, haslo, email) VALUES (null,'$i','$n','$l', '$haslo_hash','$email')";
-                echo $sql;
+                $sql="INSERT INTO nauczyciele(id_nauczyciela, imie, nazwisko, login, haslo, email, admin) VALUES (null,'$i','$n','$l', '$haslo_hash','$email', $admin)";
+
                 $result= mysqli_query($polaczenie,$sql);
     
                 echo "<p id='add'>Dodano nauczyciela!</p>";

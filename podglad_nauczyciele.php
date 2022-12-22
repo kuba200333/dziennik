@@ -25,9 +25,9 @@ if (!isset($_SESSION['zalogowany'])){
         
         <div id="glowny">
             <table>
-            <tr><th>Nazwisko</th><th>Imie</th>
+            <tr><th>lp.</th><th>Nazwisko</th><th>Imie</th>
             <?php
-            if($_SESSION['login']=='admin'){
+            if($_SESSION['admin'] ==1){
                 echo "<th>usuń</th>";
             }
             ?>
@@ -38,10 +38,10 @@ if (!isset($_SESSION['zalogowany'])){
             $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
             $sql = "SELECT nauczyciele.id_nauczyciela as id_nauczyciela, nauczyciele.nazwisko as nazwisko, nauczyciele.imie as imie FROM nauczyciele where nauczyciele.nazwisko !='admin' order by nazwisko asc;";
             $result= mysqli_query($polaczenie,$sql);
-
+            $x=1;
             while($row=mysqli_fetch_array($result)){
-                echo "<tr>" . "<td>" . $row["nazwisko"]. "<td>".$row["imie"]. "</td>";
-                if($_SESSION['login']=='admin'){
+                echo "<tr><td>".$x++."</td><td>" . $row["nazwisko"]. "<td>".$row["imie"]. "</td>";
+                if($_SESSION['admin'] ==1){
                     echo"<td class='usuwanie'><form action='podglad_oceny_nauczyciela.php' method='post'><input type='hidden' name='id_nauczyciela' value='".$row["id_nauczyciela"]."'><input type='submit' name='usun' value='X'></form></td>";
                 }
                 echo"</tr>";

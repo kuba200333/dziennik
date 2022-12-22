@@ -134,6 +134,8 @@ if (!isset($_SESSION['zalogowany'])){
                 <option>5+</option>
                 <option>6-</option>
                 <option>6</option>
+                <option>nk</option>
+                <option>zw</option>
                 <option>+</option>
                 <option>-</option>
             </datalist>
@@ -220,6 +222,10 @@ if (!isset($_SESSION['zalogowany'])){
             $ocena=0.5;
         }else if($ocena=="-"){
             $ocena=0.25;
+        }else if($ocena=="nk"){
+            $ocena=0.01;
+        }else if($ocena=="zw"){
+            $ocena=0.02;
         }
 
         
@@ -267,8 +273,13 @@ if (!isset($_SESSION['zalogowany'])){
             $semestr=$row20[0];
         }
 
+        if($ocena<1){
+            $nie_licz=1;
+        }else{
+            $nie_licz=0;
+        }
         
-        $zapytanie3="INSERT INTO oceny (id_oceny, id_przedmiotu, ocena, data, id_nauczyciela, id_kategorii, id_ucznia, semestr,komentarz, waga) VALUES (null,".$id_przedmiotu.",$ocena,'$data',$id_nauczyciela, $id_kategorii, $id_ucznia, $semestr, '$komentarz', $waga);";
+        $zapytanie3="INSERT INTO oceny (id_oceny, id_przedmiotu, ocena, data, id_nauczyciela, id_kategorii, id_ucznia, semestr,komentarz, waga, nie_licz) VALUES (null,".$id_przedmiotu.",$ocena,'$data',$id_nauczyciela, $id_kategorii, $id_ucznia, $semestr, '$komentarz', $waga, $nie_licz);";
 
         $wyslij3=mysqli_query($polaczenie,$zapytanie3);
 

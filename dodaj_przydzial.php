@@ -4,7 +4,9 @@ if (!isset($_SESSION['zalogowany'])){
     header("Location: index.php");
 }
 
-
+if ($_SESSION['admin'] !=1){
+    header("Location: dziennik.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +31,7 @@ if (!isset($_SESSION['zalogowany'])){
 
             echo "<table>";
             echo "<tr><td colspan='2' class='kolumna3'></td></tr>";
-            echo "<tr><td class='kolumna1'>klasy:</td><td class='kolumna2'><select name='klasy'>";
+            echo "<tr><td class='kolumna1'>klasy:</td><td class='kolumna2'><select name='klasy' required>";
             echo "<option value=''</option>";
             while($row1=mysqli_fetch_array($wyslij1)){
                 echo "<option>".$row1['skrot_klasy']."</option>";
@@ -39,7 +41,7 @@ if (!isset($_SESSION['zalogowany'])){
             $zapytanie="SELECT nazwa_przedmiotu FROM przedmioty where nazwa_przedmiotu != 'zachowanie' order by nazwa_przedmiotu asc;";
             $wyslij=mysqli_query($polaczenie,$zapytanie);
     
-            echo "<tr><td class='kolumna1'>przedmiot:</td><td class='kolumna2'><select name='przedmiot'>";
+            echo "<tr><td class='kolumna1'>przedmiot:</td><td class='kolumna2'><select name='przedmiot' required>";
             echo "<option value=''</option>";
             while($row=mysqli_fetch_array($wyslij)){
                 echo "<option>".$row[0]."</option>";
@@ -49,7 +51,7 @@ if (!isset($_SESSION['zalogowany'])){
             $zapytanie2="SELECT concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as nauczyciel FROM nauczyciele order by nauczyciel asc;";
             $wyslij2=mysqli_query($polaczenie,$zapytanie2);
     
-            echo "<tr><td class='kolumna1'>nauczyciel:</td><td class='kolumna2'><select name='nauczyciel'>";
+            echo "<tr><td class='kolumna1'>nauczyciel:</td><td class='kolumna2'><select name='nauczyciel'> required";
             echo "<option value=''</option>";
             while($row2=mysqli_fetch_array($wyslij2)){
                 echo "<option>".$row2[0]."</option>";

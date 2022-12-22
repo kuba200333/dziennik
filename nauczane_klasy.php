@@ -12,7 +12,7 @@ if (!isset($_SESSION['zalogowany'])){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Przydziały</title>
     <link rel="stylesheet" href="styl5.css">
 </head>
 
@@ -34,13 +34,13 @@ if (!isset($_SESSION['zalogowany'])){
                 require "connect.php";
 
                 $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
-                $zapytanie11="SELECT skrot_klasy FROM klasy order by skrot_klasy asc;";
+                $zapytanie11="SELECT nazwa_klasy FROM klasy order by nazwa_klasy asc;";
                 $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
             
                 echo "Wybierz klasę: <select name='klasy' onchange='this.form.submit()'>";
                 echo "<option value=''</option>";
                 while($row11=mysqli_fetch_array($wyslij11)){
-                    echo "<option>".$row11['skrot_klasy']."</option>";
+                    echo "<option>".$row11['nazwa_klasy']."</option>";
                 }
                 echo "</select>";
                 mysqli_close($polaczenie);
@@ -59,17 +59,26 @@ if (!isset($_SESSION['zalogowany'])){
                 
                 <?php
                     if(!empty($_POST['klasy'])){
-                        $skrot_klasy=$_POST['klasy'];
+                        $nazwa_klasy=$_POST['klasy'];
                         require "connect.php";
                         $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
-                        $zapytanie="SELECT k.skrot_klasy, p.nazwa_przedmiotu, concat(na.nazwisko, ' ', na.imie) as nauczyciel, n.id as id from nauczanie n inner JOIN klasy k on n.id_klasy=k.id_klasy inner join przedmioty p on n.id_przedmiot=p.id_przedmiotu inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where k.skrot_klasy='$skrot_klasy' order by p.nazwa_przedmiotu;";
+                        $zapytanie="SELECT k.skrot_klasy, p.nazwa_przedmiotu, concat(na.nazwisko, ' ', na.imie) as nauczyciel, n.id as id from nauczanie n inner JOIN klasy k on n.id_klasy=k.id_klasy inner join przedmioty p on n.id_przedmiot=p.id_przedmiotu inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where k.nazwa_klasy='$nazwa_klasy' order by p.nazwa_przedmiotu;";
                         $wyslij=mysqli_query($polaczenie,$zapytanie);
                             if ($wyslij->num_rows>0){
                                 
-                            echo "<tr><th>lp.</th><th>Przedmiot</th><th>Nauczyciel</th><th>Usuń</th></tr>";
+                            echo "<tr><th>lp.</th><th>Przedmiot</th><th>Nauczyciel</th>";
+                            if($_SESSION['admin'] ==1){
+                                echo "<th>Usuń</th>";
+                                }
+                            echo"</tr>";
                             $x=1;
                             while($row=mysqli_fetch_array($wyslij)){
-                                echo"<tr><td style='text-align: right;'>".$x++.".</td><td>$row[1]</td><td>$row[2]</td><td class='usuwanie'><form action='' method='post'><input type='hidden' name='id_przydzial' value='".$row['id']."'><input type='submit' name='usun' value='X'></form></td></tr>";
+                                echo"<tr><td style='text-align: right;'>".$x++.".</td><td>$row[1]</td><td>$row[2]</td>";
+                                if($_SESSION['admin'] ==1){
+                                    echo "<td class='usuwanie'><form action='' method='post'><input type='hidden' name='id_przydzial' value='".$row['id']."'><input type='submit' name='usun' value='X'></form></td></td></tr>";
+                                }else{
+                                    echo "</tr>";
+                                }
                             }
                         }else{
                                 echo"Brak przydziałów w tym oddziale";

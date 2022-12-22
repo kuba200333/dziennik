@@ -14,7 +14,7 @@ if (!isset($_SESSION['zalogowany'])){
     <title>Statystyki</title>
     <link rel="stylesheet" href="styl4.css">
 </head>
-<body>
+<bodyss>
     <div id="kontener">
         <div id="naglowek1">
         <a href="\dziennik_lekcyjny\dziennik.php">Powrót do strony głównej <br></a>
@@ -28,11 +28,11 @@ if (!isset($_SESSION['zalogowany'])){
         <div id='wybierz'>
             <form action="" method="post">
             <?php
-                if(empty($_POST['klasy'])){
+                
                 require "connect.php";
 
                 $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
-                $zapytanie11="SELECT skrot_klasy FROM klasy;";
+                $zapytanie11="SELECT skrot_klasy FROM klasy where wirt=0 order by skrot_klasy;";
                 $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
             
                 echo "Wybierz klasę: <select name='klasy' onchange='this.form.submit()'>";
@@ -43,7 +43,7 @@ if (!isset($_SESSION['zalogowany'])){
                 echo "</select>";
                 mysqli_close($polaczenie);
                 echo "</form>";
-                }
+                
                 if(!empty($_POST['klasy'])){
                     echo "<p class='srodek'><b>Klasa: </b>".$_POST['klasy']."</p>";
                 }
@@ -70,17 +70,21 @@ if (!isset($_SESSION['zalogowany'])){
                         $id_klasy=$row13['id_klasy'];
                     }
                 
-
-                    $zapytanie="SELECT concat(u.nazwisko_ucznia, ' ', u.imie_ucznia) as dane_ucznia, k.skrot_klasy, z.ocena as zachowanie, round(avg(o.ocena),2) as średnia from oceny_zachowanie z inner join oceny o on z.id_ucznia=o.id_ucznia inner join uczniowie u on z.id_ucznia=u.id_ucznia inner join klasy k on u.id_klasy=k.id_klasy where z.id_kategorii=8 and o.id_kategorii=8  and k.id_klasy=$id_klasy group by o.id_ucznia;";
-                    
+                    $zapytanie="SELECT concat(u.nazwisko_ucznia, ' ', u.imie_ucznia) as dane_ucznia, z.ocena as zachowanie, round(avg(o.ocena),2) as średnia from oceny o 
+                    left OUTER JOIN oceny_zachowanie z on o.id_ucznia=z.id_ucznia 
+                    left OUTER JOIN uczniowie u on o.id_ucznia=u.id_ucznia 
+                    left OUTER JOIN klasy k on u.id_klasy=k.id_klasy where o.id_kategorii=8 and k.id_klasy= $id_klasy and o.nie_licz=0 group by o.id_ucznia order by dane_ucznia asc;";
 
                     $wyslij=mysqli_query($polaczenie,$zapytanie);  
                 
                 if ($wyslij->num_rows>0){
                     echo "<table>";
-                    echo "<tr><th>Nazwisko i imie</th><th>Klasa</th><th>Zachowanie</td><th>Średnia ocen</th></tr>";
+                    echo "<tr><th>lp.</th><th>Nazwisko i imie</th><th>Średnia ocen</td><th>Zachowanie</th></tr>";
+                    $id=1;
                     while($row=mysqli_fetch_array($wyslij)){
-                        echo "<tr><td>".$row[0]."</td><td>".$row[1]."</td><td>";
+                        
+                        echo "<tr><td>".$id++."</td><td>".$row[0]."</td><td>".$row[2]."</td><td>";
+                        
                         if($row['zachowanie']==0){
                             echo "";
                             }
@@ -103,7 +107,7 @@ if (!isset($_SESSION['zalogowany'])){
                                 echo "naganne";
                             }
 
-                        echo "</td><td>".$row[3]."</td></tr>";
+                        echo "</td></tr>";
                     }
                     echo "</table>";
                 }
@@ -135,41 +139,45 @@ if (!isset($_SESSION['zalogowany'])){
                     }
                 
 
-                    $zapytanie="SELECT concat(u.nazwisko_ucznia, ' ', u.imie_ucznia) as dane_ucznia, k.skrot_klasy, z.ocena as zachowanie, round(avg(o.ocena),2) as średnia from oceny_zachowanie z inner join oceny o on z.id_ucznia=o.id_ucznia inner join uczniowie u on z.id_ucznia=u.id_ucznia inner join klasy k on u.id_klasy=k.id_klasy where z.id_kategorii=7 and o.id_kategorii=7 and k.id_klasy=$id_klasy group by o.id_ucznia;";
+                    $zapytanie="SELECT concat(u.nazwisko_ucznia, ' ', u.imie_ucznia) as dane_ucznia, z.ocena as zachowanie, round(avg(o.ocena),2) as średnia from oceny o left OUTER JOIN oceny_zachowanie z on o.id_ucznia=z.id_ucznia left OUTER JOIN uczniowie u on o.id_ucznia=u.id_ucznia left OUTER JOIN klasy k on u.id_klasy=k.id_klasy where o.id_kategorii=7 and k.id_klasy= $id_klasy and o.nie_licz=0 group by o.id_ucznia order by dane_ucznia asc;";
 
                     $wyslij=mysqli_query($polaczenie,$zapytanie);  
                 
-                if ($wyslij->num_rows>0){
-                    echo "<table>";
-                    echo "<tr><th>Nazwisko i imie</th><th>Klasa</th><th>Zachowanie</td><th>Średnia ocen</th></tr>";
-                    while($row=mysqli_fetch_array($wyslij)){
-                        echo "<tr><td>".$row[0]."</td><td>".$row[1]."</td><td>";
-                        if($row['zachowanie']==0){
-                            echo "";
-                            }
-                            else if($row['zachowanie']==6){
-                                echo "wzorowe";
-                            }
-                            else if($row['zachowanie']==5){
-                                echo "bardzo dobre";
-                            }
-                            else if($row['zachowanie']==4){
-                                echo "dobre";
-                            }
-                            else if($row['zachowanie']==3){
-                                echo "poprawne";
-                            }
-                            else if($row['zachowanie']==2){
-                                echo "nieodpowiednie";
-                            }
-                            else if($row['zachowanie']==1){
-                                echo "naganne";
-                            }
-
-                        echo "</td><td>".$row[3]."</td></tr>";
+                    if ($wyslij->num_rows>0){
+                        echo "<table>";
+                        echo "<tr><th>lp.</th><th>Nazwisko i imie</th><th>Średnia ocen</td><th>Zachowanie</th></tr>";
+                        $id=1;
+                        while($row=mysqli_fetch_array($wyslij)){
+                            echo "<tr><td>".$id++."</td><td>".$row[0]."</td>";
+                                echo"<td>".$row[2]."</td>";
+                            echo"<td>";
+                            
+                            if($row['zachowanie']==0){
+                                echo "";
+                                }
+                                else if($row['zachowanie']==6){
+                                    echo "wzorowe";
+                                }
+                                else if($row['zachowanie']==5){
+                                    echo "bardzo dobre";
+                                }
+                                else if($row['zachowanie']==4){
+                                    echo "dobre";
+                                }
+                                else if($row['zachowanie']==3){
+                                    echo "poprawne";
+                                }
+                                else if($row['zachowanie']==2){
+                                    echo "nieodpowiednie";
+                                }
+                                else if($row['zachowanie']==1){
+                                    echo "naganne";
+                                }
+    
+                            echo "</td></tr>";
+                        }
+                        echo "</table>";
                     }
-                    echo "</table>";
-                }
                 else{
                     echo "Brak ocen rocznych lub ocen rocznych z zachowania";
                 }
@@ -185,5 +193,6 @@ if (!isset($_SESSION['zalogowany'])){
 
 </div>
 </div>
+
 </body>
 </html>

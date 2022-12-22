@@ -1,0 +1,2 @@
+login: slazak_artur hasło: slazak_artur
+login: admin hasło: mko0(IJN

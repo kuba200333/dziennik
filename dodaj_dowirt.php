@@ -16,11 +16,11 @@ if (!isset($_SESSION['zalogowany'])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styl.css">
-    <title>Dodaj przydział</title>
+    <title>Dodaj ucznia do wirtualnej klasy</title>
 </head>
 <body>
     <div class="kontener">
-    <h4 class="inside">Dodaj przydział nauczycielowi</h4>
+    <h4 class="inside">Dodaj ucznia do wirtualnej klasy</h4>
     <form action="" method='post'>
         <?php
             require "connect.php";

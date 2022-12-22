@@ -27,7 +27,7 @@ if (!isset($_SESSION['zalogowany'])){
 
             $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
     
-            if($login !='admin'){
+            if($_SESSION['admin'] !=1){
                 
                 $zapytanie11="SELECT DISTINCT k.skrot_klasy as klasa FROM nauczanie n inner join klasy k on n.id_klasy=k.id_klasy inner join przedmioty p on n.id_przedmiot=p.id_przedmiotu inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where na.login='$login' order by klasa asc;";
                 $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
@@ -50,7 +50,7 @@ if (!isset($_SESSION['zalogowany'])){
             }
 
             $login=$_SESSION['login'];
-            if($login=='admin'){
+            if($_SESSION['admin'] ==1){
                 $zapytanie110="SELECT DISTINCT k.skrot_klasy as klasa FROM nauczanie n inner join klasy k on n.id_klasy=k.id_klasy inner join przedmioty p on n.id_przedmiot=p.id_przedmiotu inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela order by klasa asc;";
                 $wyslij110=mysqli_query($polaczenie,$zapytanie110);  
 
@@ -97,7 +97,8 @@ if (!isset($_SESSION['zalogowany'])){
             }
         
 
-            $zapytanie10="SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM uczniowie where id_klasy=$id_klasy order by concat(nazwisko_ucznia, ' ', imie_ucznia) asc;";
+            $zapytanie10="SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM uczniowie where id_klasy=$id_klasy UNION SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM wirtualne_klasy where id_klasy=$id_klasy order by uczen asc;";
+
             $wyslij10=mysqli_query($polaczenie,$zapytanie10);  
             
             echo "<tr><td class='kolumna1'>uczeń:</td> <td class='kolumna2'><select name='uczen' required> ";
@@ -108,7 +109,7 @@ if (!isset($_SESSION['zalogowany'])){
             echo "</select></td></tr>";
 
             $login=$_SESSION['login'];
-            if($login != 'admin'){
+            if($_SESSION['admin'] !=1){
                 $zapytanie="SELECT DISTINCT p.nazwa_przedmiotu as przedmiot FROM nauczanie n inner join klasy k on n.id_klasy=k.id_klasy inner join przedmioty p on n.id_przedmiot=p.id_przedmiotu 
                 inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where k.skrot_klasy='$skrot_klasy' and na.login='$login' order by p.nazwa_przedmiotu asc;";
                 $wyslij=mysqli_query($polaczenie,$zapytanie);
@@ -126,7 +127,7 @@ if (!isset($_SESSION['zalogowany'])){
                     echo "Nie uczysz w tej klasie";
                 }
             }
-            if($login == 'admin'){
+            if($_SESSION['admin'] ==1){
                 $zapytanie="SELECT DISTINCT p.nazwa_przedmiotu as przedmiot FROM nauczanie n inner join klasy k on n.id_klasy=k.id_klasy inner join przedmioty p on n.id_przedmiot=p.id_przedmiotu 
                 inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where k.skrot_klasy='$skrot_klasy' order by p.nazwa_przedmiotu asc;";
                 $wyslij=mysqli_query($polaczenie,$zapytanie);
@@ -175,6 +176,8 @@ if (!isset($_SESSION['zalogowany'])){
                 <option>5+</option>
                 <option>6-</option>
                 <option>6</option>
+                <option>nk</option>
+                <option>zw</option>
                 <option>+</option>
                 <option>-</option>
             </datalist>
@@ -262,6 +265,10 @@ if (!isset($_SESSION['zalogowany'])){
             $ocena=0.5;
         }else if($ocena=="-"){
             $ocena=0.25;
+        }else if($ocena=="nk"){
+            $ocena=0.01;
+        }else if($ocena=="zw"){
+            $ocena=0.02;
         }
 
         while($row2=mysqli_fetch_array($wyslij2)){
@@ -309,8 +316,13 @@ if (!isset($_SESSION['zalogowany'])){
             $semestr=$row20[0];
         }
 
+        if($ocena<1){
+            $nie_licz=1;
+        }else{
+            $nie_licz=0;
+        }
         
-        $zapytanie3="INSERT INTO oceny (id_oceny, id_przedmiotu, ocena, data, id_nauczyciela, id_kategorii, id_ucznia, semestr,komentarz, waga) VALUES (null,".$id_przedmiotu.",$ocena,'$data',$id_nauczyciela, $id_kategorii, $id_ucznia, $semestr, '$komentarz', $waga);";
+        $zapytanie3="INSERT INTO oceny (id_oceny, id_przedmiotu, ocena, data, id_nauczyciela, id_kategorii, id_ucznia, semestr,komentarz, waga, nie_licz) VALUES (null,".$id_przedmiotu.",$ocena,'$data',$id_nauczyciela, $id_kategorii, $id_ucznia, $semestr, '$komentarz', $waga, $nie_licz);";
 
         $wyslij3=mysqli_query($polaczenie,$zapytanie3);
 

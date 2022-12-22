@@ -5,6 +5,7 @@
     box-sizing: border-box;
     text-decoration: none;
     text-align: center;
+    
 }
 body{
     padding: 0;
@@ -72,14 +73,15 @@ body{
     width: 50%;
     border: 1px solid white;
     border-collapse: collapse;
-    margin: 0 auto;
+    margin: auto;
     color: #1F2232;
+    
 }
 td{
     border: 1px solid rgb(0, 0, 0);
     border-collapse: collapse;
     color: #1F2232;
-    padding: 5px;
+    padding: 2px;
 }
 th{
     border: 1px solid rgb(0, 0, 0);

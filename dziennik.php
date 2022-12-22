@@ -2,6 +2,8 @@
 session_start();
 if (!isset($_SESSION['zalogowany'])){
     header("Location: index.php");
+
+
 }
 
 ?>
@@ -35,12 +37,12 @@ if (!isset($_SESSION['zalogowany'])){
         </div>
         <div id="menu">
         <?php
-                if($_SESSION['login'] !='admin'){
+                
                     echo '<a href="\dziennik_lekcyjny\moje_przedmioty.php">Interfejs lekcyjny</a>';
-                }
+                
                 ?>
             <?php
-            if($_SESSION['login']=='admin'){
+            if($_SESSION['admin'] ==1){
                 echo <<<END
             <div id="zawijaj">
                 <a>Dane szkolne</a>
@@ -59,7 +61,7 @@ if (!isset($_SESSION['zalogowany'])){
             }
             ?>
             <?php
-            if($_SESSION['login']=='admin'){
+            if($_SESSION['admin'] ==1){
                 echo <<<END
             <div id="zawijaj">
                 <a>Wirtualne klasy</a>
@@ -76,8 +78,10 @@ if (!isset($_SESSION['zalogowany'])){
                 <a>Ocenianie</a>
                 <ul>
                     <li><a href="\dziennik_lekcyjny\dodaj_oceny.php" onclick="window.open('dodaj_oceny.php', 'nazwa', 'menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=no,reszable=no,fullscreen=no,channelmode=no,width=350,height=450').focus(); return false">Ocena z przedmiotu</a></li>
-                    <li><a href="\dziennik_lekcyjny\dodaj_zachowanie.php" onclick="window.open('dodaj_zachowanie.php', 'nazwa', 'menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=no,reszable=no,fullscreen=no,channelmode=no,width=350,height=400').focus(); return false">Ocena z zachowania</a></li>
+                    <li><a href="\dziennik_lekcyjny\dodaj_uwage.php" onclick="window.open('dodaj_uwage.php', 'nazwa', 'menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=no,reszable=no,fullscreen=no,channelmode=no,width=350,height=400').focus(); return false">Dodaj uwagę</a></li>
+                    <li><a href="\dziennik_lekcyjny\dodaj_zachowanie.php" onclick="window.open('dodaj_zachowanie.php', 'nazwa', 'menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=no,reszable=no,fullscreen=no,channelmode=no,width=350,height=400').focus(); return false">Ocena klasyf. z zach.</a></li>
                     <li><a href="\dziennik_lekcyjny\podglad_oceny_uczniow.php">Podgląd ocen uczniów</a></li>
+                    <li><a href="\dziennik_lekcyjny\podglad_zachowanie.php">Podgląd uwag uczniów</a></li>
                     <li><a href="\dziennik_lekcyjny\podglad_zachowanie.php">Podgląd zachowania uczniów</a></li>
                 </ul>
             </div>

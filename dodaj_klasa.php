@@ -4,7 +4,7 @@ if (!isset($_SESSION['zalogowany'])){
     header("Location: index.php");
 }
 
-if ($_SESSION['login']!='admin'){
+if ($_SESSION['admin'] !=1){
     header("Location: dziennik.php");
 }
 ?>

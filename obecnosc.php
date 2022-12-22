@@ -11,61 +11,32 @@ if (!isset($_SESSION['zalogowany'])){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obecność</title>
-    <style>
-        table{
-            border: 1px solid black;
-            border-collapse: collapse;
-            text-align: center;
-        }
-        td{
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        tr{
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        th{
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        td.wyglad input{
-            appearance: none;
-            width: 10px;
-            height: 10px;
-            border: 1px solid black;
-        }
-        td.wyglad input:checked{
-            background-color: black;
-        }
-        .kolumna1{
-            width: 30%;
-            background-color: rgba(255, 253, 251, 0.909);
-        }
-        .kolumna2{
-            width: 70%;
-            background-color: rgb(236, 236, 236);
-        }
-        .kolumna3{
-            width: 100%;
-            background-color: rgb(236, 236, 236);
-        }
-    </style>
+    <title>Dodawanie seryjnie frekwencji</title>
+    <link rel="stylesheet" href="styl10.css">
 </head>
 
 <body>
+<div id="kontener">
+    <div id="naglowek1">
+        <a href="\dziennik_lekcyjny\moje_przedmioty.php">Powrót do nauczanych przedmiotów <br></a>
+    </div>
+
+    <div id="naglowek2">
+        <h2>Dodawanie seryjnie frekwencji</h2>
+    </div>
+        
+    <div id='glowny'>
     <form action="" method="post">
         
         <?php
 
         echo"
         <table>
-        <tr><td class='kolumna3' colspan='2'></td></tr>
-        <tr><td class='kolumna1'>klasa:</td> <td class='kolumna2'>".$_POST['klasa']."</td></tr>";
-        echo "<tr><td class='kolumna1'>Wybierz datę: </td><td class='kolumna2'><input type='date' name='data' required></td></tr>
-        <tr><td class='kolumna1'>Wybierz lekcje:  </td><td class='kolumna2'><input type='number' name='lekcja' min=1 max=8 required></td></tr>
-        <tr><td class='kolumna3' colspan='2'></td></tr>
+
+        <tr><td klasa:</td> <td>".$_POST['klasa']."</td></tr>";
+        echo "<tr><td >Wybierz datę: </td><td><input type='date' name='data' required></td></tr>
+        <tr><td>Wybierz lekcje:  </td><td><input type='number' name='lekcja' min=1 max=8 required></td></tr>
+
         </table><br>";
 
         echo "<table>
@@ -77,7 +48,7 @@ if (!isset($_SESSION['zalogowany'])){
         $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
         $id_klasy=$_POST['id_klasy'];
         $id_przedmiot=$_POST['id_przedmiot'];
-        $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen from uczniowie where id_klasy=$id_klasy UNION SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen from wirtualne_klasy where id_klasy=$id_klasy;";
+        $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as duczen from uczniowie where id_klasy=$id_klasy UNION SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen from wirtualne_klasy where id_klasy=$id_klasy order by duczen asc;";
 
         $wyslij=mysqli_query($polaczenie,$zapytanie);
         echo "<tr style='background-color: silver;' class='suma'>
@@ -86,7 +57,7 @@ if (!isset($_SESSION['zalogowany'])){
         ";
         $x=1;
         while($row=mysqli_fetch_array($wyslij)){
-            echo '<tr id="'.$row[0].'"><td>'.$x++.'.</td><td style="text-align:left;">'.$row['uczen'].'<input type="hidden" name="uczen['.$row[0].']"  value="'.$row[0].'"><input type="hidden" name="id_przedmiot" value="'.$id_przedmiot.'"></td>
+            echo '<tr id="'.$row[0].'"><td>'.$x++.'.</td><td style="text-align:left;">'.$row['duczen'].'<input type="hidden" name="uczen['.$row[0].']"  value="'.$row[0].'"><input type="hidden" name="id_przedmiot" value="'.$id_przedmiot.'"></td>
             <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="obecnosc" value="ob"></td><td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="niebecnosc" value="nb"></td>
             <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="usprawiedliwione" value="u"></td>
             <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="zwolniony" value="zw"></td><td class="wyglad"><input type="radio" name="frekwencja['.$row[0].']" id="spoznienie" value="sp"></td></tr>';
@@ -131,7 +102,7 @@ if (!isset($_SESSION['zalogowany'])){
             header("Location: http://localhost/dziennik_lekcyjny/moje_przedmioty.php");
         }
     ?>
-    <a href="\dziennik_lekcyjny\moje_przedmioty.php">Powrót do nauczanych przedmiotów <br></a>
+
     <script>
         var ob = 0;
         var nb = 0;
@@ -199,5 +170,10 @@ if (!isset($_SESSION['zalogowany'])){
             }
         }
     </script>
+     </div>
+    <div id="stopka">
+       
+    </div>
+</div>
 </body>
 </html>

@@ -138,7 +138,7 @@ if (!isset($_SESSION['zalogowany'])){
             
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
             if ($wyslij1->num_rows>0){
-                echo "<b>Średnia ważona ocen: </b>";
+                echo "<b>Śródroczna średnia ważona ocen: </b>";
     
                 $zapytanie2="SELECT round((SUM(ocena*oceny.waga)/SUM(oceny.waga)),2) as srednia from oceny inner join 
                 przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie 
@@ -185,6 +185,10 @@ if (!isset($_SESSION['zalogowany'])){
                         echo "+";
                     }else if ($row1['ocena']==0.25){
                         echo "-";
+                    }else if ($row1['ocena']==0.01){
+                        echo "nk";
+                    }else if ($row1['ocena']==0.02){
+                        echo "zw";
                     }else{
                         echo $row1['ocena'];
                     }
@@ -197,7 +201,7 @@ if (!isset($_SESSION['zalogowany'])){
                         echo $row1['waga'];
                     }
                     echo"</td><td>".$row1['komentarz']."</td><td>".$row1['data']."</td><td>".$row1['dodal']."</td>";
-                    if($login==$row1['login']){
+                    if($login==$row1['login'] or $_SESSION['admin'] ==1){
                     echo"<td class='usuwanie'><form action='' method='post'><input type='hidden' name='id_oceny' value='".$row1['id_oceny']."'><input type='submit' name='usun' value='X'></form></td></tr>";
                     }else{
                         echo"<td></td></tr>";
@@ -260,7 +264,7 @@ if (!isset($_SESSION['zalogowany'])){
 
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
             if ($wyslij1->num_rows>0){
-                echo "<b>Średnia ważona ocen: </b>";
+                echo "<b>Roczna średnia ważona ocen: </b>";
     
                 $zapytanie2="SELECT round((SUM(ocena*oceny.waga)/SUM(oceny.waga)),2) as srednia from oceny inner join 
                 przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie 
@@ -268,7 +272,7 @@ if (!isset($_SESSION['zalogowany'])){
                 oceny.id_kategorii=kategorie_ocen.id_kategorii inner join nauczyciele on 
                 oceny.id_nauczyciela=nauczyciele.id_nauczyciela where 
                 concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' 
-                and przedmioty.id_przedmiotu='$id_przedmiotu' and kategorie_ocen.id_kategorii not in (5,6,7,8) and semestr=2 and oceny.ocena between 1 and 6;";
+                and przedmioty.id_przedmiotu='$id_przedmiotu' and kategorie_ocen.id_kategorii not in (5,6,7,8) and oceny.ocena between 1 and 6;";
                 $wyslij2=mysqli_query($polaczenie,$zapytanie2);  
         
                 while($row2=mysqli_fetch_array($wyslij2)){
@@ -307,6 +311,10 @@ if (!isset($_SESSION['zalogowany'])){
                     echo "+";
                 }else if ($row1['ocena']==0.25){
                     echo "-";
+                }else if ($row1['ocena']==0.01){
+                    echo "nk";
+                }else if ($row1['ocena']==0.02){
+                    echo "zw";
                 }else{
                     echo $row1['ocena'];
                 }
@@ -318,7 +326,7 @@ if (!isset($_SESSION['zalogowany'])){
                     echo $row1['waga'];
                 }
                 echo"</td><td>".$row1['komentarz']."</td><td>".$row1['data']."</td><td>".$row1['dodal']."</td>";
-                if($login==$row1['login']){
+                if($login==$row1['login'] or $_SESSION['admin'] ==1){
                 echo"<td class='usuwanie'><form action='' method='post'><input type='hidden' name='id_oceny' value='".$row1['id_oceny']."'><input type='submit' name='usun' value='X'></form></td></tr>";
                 }else{
                     echo"<td></td></tr>";

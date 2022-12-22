@@ -57,13 +57,8 @@ if (!isset($_SESSION['zalogowany'])){
             
                 <tr><td class='kolumna1'>ocena</td><td class='kolumna2'>
                     <select name='ocena'>
-                        <option></option>
-                        <option>wzorowe</option>
-                        <option>bardzo dobre</option>
-                        <option>dobre</option>
-                        <option>poprawne</option>
-                        <option>nieodpowiednie</option>
-                        <option>naganne</option>
+                        <option>negatywne</option>
+                        <option>pozytywne</option>
                     </select>
                 </tr>
 
@@ -98,7 +93,7 @@ if (!isset($_SESSION['zalogowany'])){
 
 
     
-            $zapytanie5="SELECT nazwa_kategorii FROM `kategorie_ocen` where id_kategorii in (5,6,7,8);";
+            $zapytanie5="SELECT nazwa_kategorii FROM `kategorie_ocen` where id_kategorii in (9,10);";
             
             $wyslij5=mysqli_query($polaczenie,$zapytanie5);
             
@@ -210,7 +205,7 @@ if (!isset($_SESSION['zalogowany'])){
             $semestr=$row20[0];
         }
 
-        $zapytanie3="INSERT INTO oceny_zachowanie (id_oceny, id_przedmiotu, ocena, data, id_nauczyciela, id_kategorii, id_ucznia, semestr,komentarz) VALUES (null,".$id_przedmiotu.",$ocena,'$data',$id_nauczyciela, $id_kategorii, $id_ucznia, $semestr, '$komentarz');";
+        $zapytanie3="INSERT INTO zachowanie_ucznia (id_oceny, id_przedmiotu, ocena, data, id_nauczyciela, id_kategorii, id_ucznia, semestr,komentarz) VALUES (null,".$id_przedmiotu.",$ocena,'$data',$id_nauczyciela, $id_kategorii, $id_ucznia, $semestr, '$komentarz');";
 
         $wyslij3=mysqli_query($polaczenie,$zapytanie3);
 
