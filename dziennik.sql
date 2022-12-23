@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 19 Gru 2022, 23:18
+-- Czas generowania: 23 Gru 2022, 00:58
 -- Wersja serwera: 10.4.22-MariaDB
 -- Wersja PHP: 7.4.27
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `dziennik`
+-- Baza danych: `testowa`
 --
 
 -- --------------------------------------------------------
@@ -42,7 +42,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id_nauczyciela`, `imie`, `nazwisko`, `login`, `email`, `haslo`, `kod_odzyskania`) VALUES
-(0, 'admin', 'admin', 'admin', 'admin@wp.pl', '$2y$10$GYmVbfcCHw1Eq3WidhhRaexjb4R3hkbiT8MdQ1QBRhbW9fWmwtb6a', 274371);
+(0, 'admin', 'admin', 'admin', 'kuba.wiercinski2003@gmail.com', '$2y$10$GYmVbfcCHw1Eq3WidhhRaexjb4R3hkbiT8MdQ1QBRhbW9fWmwtb6a', 274371);
 
 -- --------------------------------------------------------
 
@@ -160,15 +160,16 @@ CREATE TABLE `nauczyciele` (
   `login` text CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
   `email` text NOT NULL,
   `haslo` text CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
-  `kod_odzyskania` int(6) NOT NULL
+  `kod_odzyskania` int(6) NOT NULL,
+  `admin` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `nauczyciele`
 --
 
-INSERT INTO `nauczyciele` (`id_nauczyciela`, `imie`, `nazwisko`, `login`, `email`, `haslo`, `kod_odzyskania`) VALUES
-(1, 'admin', 'admin', 'admin', 'admin', 'admin', 901331);
+INSERT INTO `nauczyciele` (`id_nauczyciela`, `imie`, `nazwisko`, `login`, `email`, `haslo`, `kod_odzyskania`, `admin`) VALUES
+(1, 'admin', 'admin', 'admin', 'admin', 'admin', 901331, 1);
 
 -- --------------------------------------------------------
 
@@ -186,7 +187,8 @@ CREATE TABLE `oceny` (
   `data` date NOT NULL,
   `id_nauczyciela` int(11) NOT NULL,
   `id_ucznia` int(11) NOT NULL,
-  `komentarz` varchar(100) NOT NULL
+  `komentarz` varchar(100) NOT NULL,
+  `nie_licz` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -265,6 +267,18 @@ CREATE TABLE `wirtualne_klasy` (
   `id_ucznia` int(11) NOT NULL,
   `imie_ucznia` varchar(20) NOT NULL,
   `nazwisko_ucznia` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `zachowanie`
+--
+
+CREATE TABLE `zachowanie` (
+  `id_oceny` int(11) NOT NULL,
+  `id_semestru` int(11) NOT NULL,
+  `ocena` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -359,6 +373,12 @@ ALTER TABLE `uczniowie`
 --
 ALTER TABLE `wirtualne_klasy`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `zachowanie`
+--
+ALTER TABLE `zachowanie`
+  ADD PRIMARY KEY (`id_oceny`);
 
 --
 -- AUTO_INCREMENT dla zrzuconych tabel
