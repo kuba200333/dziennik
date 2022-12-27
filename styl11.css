@@ -25,7 +25,7 @@ body{
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    height: 15%;
+    height: 8%;
     float: left;
     color: white;
 }
@@ -42,7 +42,7 @@ body{
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    height: 15%;
+    height: 8%;
     float: right;
     color: white;
 }
@@ -51,27 +51,26 @@ body{
     padding: 10px;
     height: 10%;
     width: 100%;
-    background-color: rgb(216, 205, 172);
-    border: 1px solid white;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(0, 0, 0);
 
 }
 
 #glowny{
     
-    height: 65%;
+    height: 74%;
     width: 100%;
-    background-color: rgb(216, 205, 172);
+    background-color: rgb(255, 255, 255);
     float: left;
     padding: 10px;
     border: 1px solid white;
     overflow: auto;
-
-
+    font-size: 10px;
 }
 
 #stopka{
     clear: both;
-    height: 10%;
+    height: 8%;
     top: 0;
     left: 0;
     padding: 0 3rem;
@@ -85,14 +84,14 @@ body{
 }
 
 #glowny table{
-    width: 70%;
+    width: 40%;
     margin: 3%;
     border: 1px solid rgb(0, 0, 0);
     border-collapse: collapse;
-    background-color: rgb(216, 205, 172);
+
     color: #1F2232;
     margin: 0 auto;
-    
+    font-size: 10px;
 }
 
 
@@ -127,4 +126,8 @@ h1{
 }
 #stopka a{
     color: white;
+}
+h3{
+    text-align: center;
+    
 }

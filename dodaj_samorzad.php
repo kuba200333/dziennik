@@ -32,7 +32,7 @@ if (!isset($_SESSION['zalogowany'])){
                 echo "<option>".$row11['skrot_klasy']."</option>";
             }
             echo "</select></td></tr>";
-    
+            
             
             mysqli_close($polaczenie);
             

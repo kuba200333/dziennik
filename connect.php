@@ -3,6 +3,6 @@
 	$host = "localhost";
 	$db_user = "root";
 	$db_password = "";
-	$db_name = "dziennik";
+	$db_name = "szkola";
 
 ?>
