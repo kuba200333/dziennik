@@ -3,7 +3,7 @@
     font-family: Helvetica;
     box-sizing: border-box;
     text-decoration: none;
-    font-size: 15px;
+    
 
 }
 body{
@@ -49,10 +49,20 @@ body{
 #wybierz{
     clear: both;
     padding: 10px;
-    height: 15%;
+    height: 10%;
     width: 100%;
     background-color: rgb(216, 205, 172);
     border: 1px solid white;
+
+}
+#glowny{
+    
+    height: 74%;
+    background-color: rgb(216, 205, 172);
+    padding: 10px;
+    border: 1px solid white;
+    overflow: auto;
+    text-align: center;
 
 }
 
@@ -93,6 +103,15 @@ body{
     color: white;
 
 }
+#glowny table{
+    width: 60%;
+    border: 1px solid white;
+    border-collapse: collapse;
+    margin: auto;
+    color: #1F2232;
+    font-size: 12px;
+    
+}
 
 #glowny1 table{
     width: 100%;
@@ -118,6 +137,7 @@ td{
     border-collapse: collapse;
     color: #1F2232;
     padding: 3px;
+
 }
 th{
     border: 1px solid rgb(0, 0, 0);
@@ -138,4 +158,57 @@ h1{
 #add{
     text-align: center;
     color: red;
+}
+span.box {
+    height: 15px;
+    line-height: 15px;
+    min-width: 20px;
+    min-height: 20px;
+    display: inline-block;
+    margin: 0 3px;
+    margin-top: 1px;
+    text-align: center;
+    padding: 2px 3px;
+    color: #000000;
+}
+
+span.box a {
+    color: #000000;
+}
+
+span.box.positive-behaviour {
+   background-color: #8ae234;
+}
+
+span.box.negative-behaviour {
+   background-color: #ffa07a;
+}
+
+span.box-mapping {
+    height: 11px;
+    width: 11px;
+    min-width: 11px;
+    display: inline-block;
+    margin: 0 3px;
+    margin-top:1px;
+    text-align: center;
+    padding: 4px 4px;
+}
+.zielonybutton{
+    background-color: #8ae234;
+    border-radius: 10px;
+    border: 1px solid gray;
+}
+input, select, option{
+    color: #000000;
+    
+}
+.lewy{
+    text-align: left;
+}
+#naglowek1 a{
+    color: white;
+}
+td #ocenka{
+    min-height: 28px;
 }

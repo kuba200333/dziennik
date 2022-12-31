@@ -26,17 +26,32 @@ if (!isset($_SESSION['zalogowany'])){
         <?php
             
             $login=$_SESSION['login'];
+            if(isset($_POST['id_klasy'])){
+                $_SESSION['id_klasy']=$_POST['id_klasy'];
+                $_SESSION['id_przedmiot']=$_POST['id_przedmiot'];
+                $_SESSION['uczen']=$_POST['uczen'];
+
+                $id_klasy=$_SESSION['id_klasy'];
+                $id_przedmiot=$_SESSION['id_przedmiot'];
+                $uczen=$_SESSION['uczen'];
+                }
+                if(!isset($_POST['id_klasy'])){
+        
+                    $id_klasy=$_SESSION['id_klasy'];
+                    $id_przedmiot=$_SESSION['id_przedmiot'];
+                    $uczen=$_SESSION['uczen'];
+                }
             require "connect.php";
 
             $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
-            
 
-            echo "<tr><td class='kolumna1'>klasa:</td> <td class='kolumna2'>";
 
-            $zapytanie="SELECT nazwa_klasy from klasy where id_klasy=".$_SESSION['id_klasy'].";";
+            /*echo "<tr><td class='kolumna1'>klasa:</td> <td class='kolumna2'>";*/
+
+            $zapytanie="SELECT nazwa_klasy from klasy where id_klasy=".$id_klasy.";";
             $wyslij=mysqli_query($polaczenie,$zapytanie);
             while($row=mysqli_fetch_array($wyslij)){
-                echo $row[0];
+                /*echo $row[0];*/
                 $skrot_klasy=$row[0];
             }
             echo "</td></tr>";    
@@ -49,7 +64,7 @@ if (!isset($_SESSION['zalogowany'])){
             }
         
 
-            $zapytanie10="SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM uczniowie where id_klasy=".$_SESSION['id_klasy']." order by concat(nazwisko_ucznia, ' ', imie_ucznia) asc;";
+            $zapytanie10="SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM uczniowie where id_klasy=".$id_klasy." order by concat(nazwisko_ucznia, ' ', imie_ucznia) asc;";
             $wyslij10=mysqli_query($polaczenie,$zapytanie10);  
             /*
             echo "<tr><td class='kolumna1'>uczeń:</td> <td class='kolumna2'>
@@ -62,7 +77,7 @@ if (!isset($_SESSION['zalogowany'])){
 
             </td></tr>";
             */
-            echo "<tr><td class='kolumna1'>uczeń:</td> <td class='kolumna2'>".$_SESSION['uczen']."</td></tr>";
+            echo "<tr><td class='kolumna1'>uczeń:</td> <td class='kolumna2'>".$uczen."</td></tr>";
             /*
             $login=$_SESSION['login'];
             if($login != 'admin'){
@@ -101,7 +116,7 @@ if (!isset($_SESSION['zalogowany'])){
                 }
             }
 */
-            echo "<tr><td class='kolumna1'>przedmiot:</td> <td class='kolumna2'>".$_SESSION['przedmiot']."</td></tr>";
+            /*echo "<tr><td class='kolumna1'>przedmiot:</td> <td class='kolumna2'>".$id_przedmiot."</td></tr>";*/
 
             $zapytanie5="SELECT nazwa_kategorii FROM `kategorie_ocen` where id_kategorii not in (9,10) order by nazwa_kategorii asc;";
             
@@ -138,6 +153,8 @@ if (!isset($_SESSION['zalogowany'])){
                 <option>zw</option>
                 <option>+</option>
                 <option>-</option>
+                <option>np</option>
+                <option>nu</option>
             </datalist>
             
             </td></tr>
@@ -171,8 +188,8 @@ if (!isset($_SESSION['zalogowany'])){
             if(!isset($nie_uczy)){
                 echo <<<END
                 <tr class='inside'><td class='kolumna3' colspan='2'>
-                <input value='Dodaj' type='submit' name='wysylacz'>
-                <input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
+                <input value='Dodaj' type='submit' name='wysylacz'></form>
+                <form action='widok_ocen.php' method='post'><input type='submit' value='Zamknij' name='zamknij'"></form></td></tr>
                 END;
             }
 
@@ -181,17 +198,16 @@ if (!isset($_SESSION['zalogowany'])){
 
 
 
-    echo "</table></form>";
+    echo "</table>";
 
 
-    
     if (isset($_POST['wysylacz'])) {
         require "connect.php";
 
         $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
         $data=$_POST['data'];  
         $ocena=$_POST['ocena'];  
-        $uczen=$_SESSION['uczen'];
+        
         $komentarz=$_POST['komentarz'];
         
         $kategoria=$_POST['kategoria'];
@@ -226,10 +242,14 @@ if (!isset($_SESSION['zalogowany'])){
             $ocena=0.01;
         }else if($ocena=="zw"){
             $ocena=0.02;
+        }else if($ocena=="np"){
+            $ocena=0.03;
+        }else if($ocena=="nu"){
+            $ocena=0.04;
         }
 
         
-        $id_przedmiotu=$_SESSION['id_przedmiot'];
+        
         
     
         $zapytanie4="SELECT id_nauczyciela from `nauczyciele` where concat(nazwisko, ' ', imie)='$nauczyciel';";
@@ -279,11 +299,13 @@ if (!isset($_SESSION['zalogowany'])){
             $nie_licz=0;
         }
         
-        $zapytanie3="INSERT INTO oceny (id_oceny, id_przedmiotu, ocena, data, id_nauczyciela, id_kategorii, id_ucznia, semestr,komentarz, waga, nie_licz) VALUES (null,".$id_przedmiotu.",$ocena,'$data',$id_nauczyciela, $id_kategorii, $id_ucznia, $semestr, '$komentarz', $waga, $nie_licz);";
+        $zapytanie3="INSERT INTO oceny (id_oceny, id_przedmiotu, ocena, data, id_nauczyciela, id_kategorii, id_ucznia, semestr,komentarz, waga, nie_licz) VALUES (null,".$id_przedmiot.",$ocena,'$data',$id_nauczyciela, $id_kategorii, $id_ucznia, $semestr, '$komentarz', $waga, $nie_licz);";
 
         $wyslij3=mysqli_query($polaczenie,$zapytanie3);
 
         mysqli_close($polaczenie);
+        header("Location: http://localhost/dziennik_lekcyjny/widok_ocen.php");
+        exit;
     }
     
     ?>

@@ -52,7 +52,7 @@ if (!isset($_SESSION['zalogowany'])){
 
             $zapytanie10="SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM uczniowie where id_klasy=$id_klasy UNION SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM wirtualne_klasy where id_klasy=$id_klasy order by uczen asc;";
 
-                $wyslij10=mysqli_query($polaczenie,$zapytanie10);  
+            $wyslij10=mysqli_query($polaczenie,$zapytanie10);  
 
             
             echo "<form action='' method='post'>";
@@ -172,6 +172,7 @@ if (!isset($_SESSION['zalogowany'])){
                 oceny.id_nauczyciela=nauczyciele.id_nauczyciela where 
                 concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' 
                 and przedmioty.id_przedmiotu='$id_przedmiotu' and kategorie_ocen.id_kategorii not in (5,6,7,8) and semestr=1 and oceny.ocena between 1 and 6;";
+                echo $zapytanie2;
                 $wyslij2=mysqli_query($polaczenie,$zapytanie2);  
         
                 while($row2=mysqli_fetch_array($wyslij2)){
@@ -266,6 +267,187 @@ if (!isset($_SESSION['zalogowany'])){
                 echo "Uczeń nie posiada ocen!";
             }
     
+
+
+            echo <<<END
+            <br>
+            <table>
+            <tr>
+            <td>$uczen</td><td>
+            END;
+            $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
+            $zapytanie1="SELECT oceny.id_oceny as id_oceny, oceny.ocena as ocena, kategorie_ocen.skrót_kategorii as kategoria, kategorie_ocen.nazwa_kategorii as nazwa_kategorii, concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as dodal, oceny.komentarz as komentarz, oceny.data as data, nauczyciele.login, oceny.waga as waga, kategorie_ocen.kolor as kolor, nie_licz from oceny 
+            inner join przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie on oceny.id_ucznia=uczniowie.id_ucznia inner join kategorie_ocen on oceny.id_kategorii=kategorie_ocen.id_kategorii 
+            inner join nauczyciele on oceny.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.id_przedmiotu='$id_przedmiotu' and semestr=1 and kategorie_ocen.id_kategorii not in (7,8) order by data asc;";
+            
+            $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
+            while($row1=mysqli_fetch_array($wyslij1)){
+                if($row1['ocena']==1.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>1+ </span></a>";
+                }else if ($row1['ocena']==1.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>2- </span></a>";
+                }else if ($row1['ocena']==2.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>2+ </span></a>";
+                }else if ($row1['ocena']==2.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>3- </span></a>";
+                }else if ($row1['ocena']==3.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>3+ </span></a>";
+                }else if ($row1['ocena']==3.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>4- </span></a>";
+                }else if ($row1['ocena']==4.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>4+ </span></a>";
+                }else if ($row1['ocena']==4.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>5- </span></a>";
+                }else if ($row1['ocena']==5.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>5+ </span></a>";
+                }else if ($row1['ocena']==5.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>6- </span></a>";
+                }else if ($row1['ocena']==0.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>+ </span></a>";
+                }else if ($row1['ocena']==0.25){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>- </span></a>";
+                }else if ($row1['ocena']==0.01){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>nk </span></a>";
+                }else if ($row1['ocena']==0.02){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>zw </span></a>";
+                }else if ($row1['ocena']==1.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>1 </span></a>";
+                }else if ($row1['ocena']==2.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>2 </span></a>";
+                }else if ($row1['ocena']==3.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>3 </span></a>";
+                }else if ($row1['ocena']==4.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>4 </span></a>";
+                }else if ($row1['ocena']==5.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>5 </span></a>";
+                }else if ($row1['ocena']==6.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>6 </span></a>";
+                }else{
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>".(int)$row1['ocena']." </span></a>";
+                }
+            }
+            echo "</td><td>";
+            $zapytanie1="SELECT oceny.id_oceny as id_oceny, oceny.ocena as ocena, kategorie_ocen.skrót_kategorii as kategoria, kategorie_ocen.nazwa_kategorii as nazwa_kategorii, concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as dodal, oceny.komentarz as komentarz, oceny.data as data, nauczyciele.login, oceny.waga as waga, kategorie_ocen.kolor as kolor, nie_licz from oceny 
+            inner join przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie on oceny.id_ucznia=uczniowie.id_ucznia inner join kategorie_ocen on oceny.id_kategorii=kategorie_ocen.id_kategorii 
+            inner join nauczyciele on oceny.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.id_przedmiotu='$id_przedmiotu' and semestr=1 and kategorie_ocen.id_kategorii=5 order by data asc;";
+            
+            $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
+            while($row1=mysqli_fetch_array($wyslij1)){
+                if($row1['ocena']==1.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>1+ </span></a>";
+                }else if ($row1['ocena']==1.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>2- </span></a>";
+                }else if ($row1['ocena']==2.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>2+ </span></a>";
+                }else if ($row1['ocena']==2.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>3- </span></a>";
+                }else if ($row1['ocena']==3.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>3+ </span></a>";
+                }else if ($row1['ocena']==3.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>4- </span></a>";
+                }else if ($row1['ocena']==4.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>4+ </span></a>";
+                }else if ($row1['ocena']==4.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>5- </span></a>";
+                }else if ($row1['ocena']==5.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>5+ </span></a>";
+                }else if ($row1['ocena']==5.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>6- </span></a>";
+                }else if ($row1['ocena']==0.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>+ </span></a>";
+                }else if ($row1['ocena']==0.25){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>- </span></a>";
+                }else if ($row1['ocena']==0.01){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>nk </span></a>";
+                }else if ($row1['ocena']==0.02){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>zw </span></a>";
+                }else if ($row1['ocena']==1.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>1 </span></a>";
+                }else if ($row1['ocena']==2.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>2 </span></a>";
+                }else if ($row1['ocena']==3.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>3 </span></a>";
+                }else if ($row1['ocena']==4.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>4 </span></a>";
+                }else if ($row1['ocena']==5.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>5 </span></a>";
+                }else if ($row1['ocena']==6.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>6 </span></a>";
+                }else{
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>".(int)$row1['ocena']." </span></a>";
+                }
+            }
+            echo "</td><td>";
+            $zapytanie1="SELECT oceny.id_oceny as id_oceny, oceny.ocena as ocena, kategorie_ocen.skrót_kategorii as kategoria, kategorie_ocen.nazwa_kategorii as nazwa_kategorii, concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as dodal, oceny.komentarz as komentarz, oceny.data as data, nauczyciele.login, oceny.waga as waga, kategorie_ocen.kolor as kolor, nie_licz from oceny 
+            inner join przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie on oceny.id_ucznia=uczniowie.id_ucznia inner join kategorie_ocen on oceny.id_kategorii=kategorie_ocen.id_kategorii 
+            inner join nauczyciele on oceny.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.id_przedmiotu='$id_przedmiotu' and semestr=1 and kategorie_ocen.id_kategorii=8 order by data asc;";
+            
+            $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
+            while($row1=mysqli_fetch_array($wyslij1)){
+                if($row1['ocena']==1.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>1+ </span></a>";
+                }else if ($row1['ocena']==1.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>2- </span></a>";
+                }else if ($row1['ocena']==2.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>2+ </span></a>";
+                }else if ($row1['ocena']==2.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>3- </span></a>";
+                }else if ($row1['ocena']==3.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>3+ </span></a>";
+                }else if ($row1['ocena']==3.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>4- </span></a>";
+                }else if ($row1['ocena']==4.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>4+ </span></a>";
+                }else if ($row1['ocena']==4.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>5- </span></a>";
+                }else if ($row1['ocena']==5.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>5+ </span></a>";
+                }else if ($row1['ocena']==5.75){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>6- </span></a>";
+                }else if ($row1['ocena']==0.5){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>+ </span></a>";
+                }else if ($row1['ocena']==0.25){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>- </span></a>";
+                }else if ($row1['ocena']==0.01){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>nk </span></a>";
+                }else if ($row1['ocena']==0.02){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>zw </span></a>";
+                }else if ($row1['ocena']==1.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>1 </span></a>";
+                }else if ($row1['ocena']==2.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>2 </span></a>";
+                }else if ($row1['ocena']==3.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>3 </span></a>";
+                }else if ($row1['ocena']==4.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>4 </span></a>";
+                }else if ($row1['ocena']==5.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>5 </span></a>";
+                }else if ($row1['ocena']==6.00){
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>6 </span></a>";
+                }else{
+                    echo "<a title='Kategoria: ".$row1['nazwa_kategorii']."&#10;Data: ".$row1['data']."&#10;Nauczyciel: $nauczajacy &#10;Waga: ".$row1['waga']."&#10;Dodał: ".$row1['dodal']."&#10;&#10;Komentarz: ".$row1['komentarz']."' ><span class='box' style='background-color:".$row1['kolor'].";'>".(int)$row1['ocena']." </span></a>";
+                }
+            }
+            echo <<<END
+            </td></tr></table>
+            END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             mysqli_close($polaczenie);
 
         }

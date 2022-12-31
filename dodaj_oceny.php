@@ -180,6 +180,8 @@ if (!isset($_SESSION['zalogowany'])){
                 <option>zw</option>
                 <option>+</option>
                 <option>-</option>
+                <option>np</option>
+                <option>nu</option>
             </datalist>
             
             </td></tr>
@@ -269,6 +271,10 @@ if (!isset($_SESSION['zalogowany'])){
             $ocena=0.01;
         }else if($ocena=="zw"){
             $ocena=0.02;
+        }else if($ocena=="np"){
+            $ocena=0.03;
+        }else if($ocena=="nu"){
+            $ocena=0.04;
         }
 
         while($row2=mysqli_fetch_array($wyslij2)){

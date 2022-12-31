@@ -16,7 +16,7 @@ if (!isset($_SESSION['zalogowany'])){
 <body>
 <div id="kontener">
     <div id="naglowek1">
-        <a href="\dziennik_lekcyjny\widok_ocen.php">Powrót do widoku ocen <br></a>
+        <a href="\dziennik_lekcyjny\widok_ocen_admin.php">Powrót do widoku ocen <br></a>
     </div>
 
     <div id="naglowek2">
@@ -210,7 +210,7 @@ if (!isset($_SESSION['zalogowany'])){
             }
             /*js="<script>window.close()</script>";
             echo $js;*/
-            header("Location: http://localhost/dziennik_lekcyjny/widok_ocen.php");
+            header("Location: http://localhost/dziennik_lekcyjny/widok_ocen_admin.php");
             exit;
         }
     ?>

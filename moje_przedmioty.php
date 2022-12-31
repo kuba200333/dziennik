@@ -35,13 +35,12 @@ if (!isset($_SESSION['zalogowany'])){
                 $wyslij=mysqli_query($polaczenie,$zapytanie);
                 if ($wyslij->num_rows>0){
                 echo "<table>
-                <tr><th>lp.</th><th>przedmiot</th><th>klasa (grupa)</th><th>oceny uczniów</th><th>dodawanie ocen seryjnie</th><th>sprawdzenie frekwencji</th></tr>
+                <tr><th>lp.</th><th>przedmiot</th><th>klasa (grupa)</th><th>oceny</th><th>frekwencja</th></tr>
                 ";
                 $x=1;
                 while($row=mysqli_fetch_array($wyslij)){
                     echo "<tr><td style='text-align: right;'>".$x++.".</td><td>".$row[1]."</td><td>".$row[0]."</td>
-                    <td class='usuwanie'><form action='podglad_oceny_nauczyciela.php' method='post'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
-                    <td class='usuwanie'><form action='seryjne_oceny.php' method='post'><input type='hidden' name='klasa' value='".$row[0]."'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='nazwa_przedmiotu' value='".$row[1]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
+                    <td class='usuwanie'><form action='widok_ocen.php' method='post'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
                     <td class='usuwanie'><form action='obecnosc.php' method='post'><input type='hidden' name='klasa' value='".$row[0]."'><input type='hidden' name='id_klasy' value='".$row[2]."'><input type='hidden' name='nazwa_przedmiotu' value='".$row[1]."'><input type='hidden' name='id_przedmiot' value='".$row[3]."'><input type='submit' name='usun' value='X'></form></td>
                     </tr>";
                 }
