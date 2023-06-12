@@ -1,7 +1,7 @@
 # dziennik
 Witam serdecznie, przedstawiam swoją pracę, nad którą siedziałem trochę czasu. Jest to dziennik lekcyjny napisany w HTML, PHP, MYSQL i JAVASCRIPT.
 
-Funkcje dziennika (na dzień 19.12.2022):
+Funkcje dziennika (na dzień 31.12.2022):
 * dodawanie nauczycieli
 * dodawanie klas wraz z wychowawcą
 * dodawanie przedmiotów
@@ -13,4 +13,5 @@ Funkcje dziennika (na dzień 19.12.2022):
 * sprawdzanie obecności
 * raporty: lista klas, lista uczniów, samorządy klasowe wraz z ustalaniem składu samorządu klasowego, lista nauczycieli, lista przydziałów w danej klasie
 * statystyka śródroczna i roczna.
+* poprawiony widok ocen z poziomu nauczyciela i admina z mozliwością zmiany ocen
 * Zapraszam do testowania. Dane do logowania: login: admin hasło: mko0(IJN nazwa bazy danych MYSQL: dziennik nazwa folderu ze stroną: dziennik_lekcyjny
