@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 12 Cze 2023, 10:28
--- Wersja serwera: 10.4.22-MariaDB
--- Wersja PHP: 7.4.27
+-- Generation Time: Cze 12, 2023 at 11:42 AM
+-- Wersja serwera: 10.4.28-MariaDB
+-- Wersja PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `dziennik`
+-- Database: `dziennik`
 --
 
 -- --------------------------------------------------------
@@ -30,9 +30,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `changelog` (
   `id` int(11) NOT NULL,
   `id_dane` int(11) NOT NULL,
-  `typ` text COLLATE utf8_polish_ci NOT NULL,
+  `typ` text NOT NULL,
   `data` date NOT NULL,
-  `zmiana` text COLLATE utf8_polish_ci NOT NULL,
+  `zmiana` text NOT NULL,
   `zmieniajacy` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
@@ -45,13 +45,13 @@ CREATE TABLE `changelog` (
 CREATE TABLE `frekwencja` (
   `id_frekwencji` int(11) NOT NULL,
   `id_ucznia` int(11) NOT NULL,
-  `typ_ob` varchar(2) COLLATE utf8_polish_ci NOT NULL,
+  `typ_ob` varchar(2) NOT NULL,
   `data` date NOT NULL,
   `semestr` int(1) NOT NULL,
   `nr_lekcji` int(11) NOT NULL,
   `id_przedmiot` int(11) NOT NULL,
   `id_nauczyciel` int(11) NOT NULL,
-  `temat` text COLLATE utf8_polish_ci DEFAULT NULL
+  `temat` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
@@ -62,12 +62,12 @@ CREATE TABLE `frekwencja` (
 
 CREATE TABLE `funkcje` (
   `id_funkcji` int(11) NOT NULL,
-  `nazwa` varchar(20) COLLATE utf8_polish_ci NOT NULL,
-  `skrot` varchar(20) COLLATE utf8_polish_ci NOT NULL
+  `nazwa` varchar(20) NOT NULL,
+  `skrot` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `funkcje`
+-- Dumping data for table `funkcje`
 --
 
 INSERT INTO `funkcje` (`id_funkcji`, `nazwa`, `skrot`) VALUES
@@ -84,13 +84,13 @@ INSERT INTO `funkcje` (`id_funkcji`, `nazwa`, `skrot`) VALUES
 
 CREATE TABLE `kategorie_frekwencji` (
   `id` int(11) NOT NULL,
-  `nazwa_frekwencji` varchar(30) COLLATE utf8_polish_ci NOT NULL,
-  `skrot_frekwencji` varchar(2) COLLATE utf8_polish_ci NOT NULL,
-  `kolor` varchar(20) COLLATE utf8_polish_ci NOT NULL
+  `nazwa_frekwencji` varchar(30) NOT NULL,
+  `skrot_frekwencji` varchar(2) NOT NULL,
+  `kolor` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `kategorie_frekwencji`
+-- Dumping data for table `kategorie_frekwencji`
 --
 
 INSERT INTO `kategorie_frekwencji` (`id`, `nazwa_frekwencji`, `skrot_frekwencji`, `kolor`) VALUES
@@ -108,14 +108,14 @@ INSERT INTO `kategorie_frekwencji` (`id`, `nazwa_frekwencji`, `skrot_frekwencji`
 
 CREATE TABLE `kategorie_ocen` (
   `id_kategorii` int(11) NOT NULL,
-  `nazwa_kategorii` varchar(30) COLLATE utf8_polish_ci NOT NULL,
-  `skrót_kategorii` varchar(15) COLLATE utf8_polish_ci NOT NULL,
+  `nazwa_kategorii` varchar(30) NOT NULL,
+  `skrót_kategorii` varchar(15) NOT NULL,
   `waga` int(11) NOT NULL,
-  `kolor` text COLLATE utf8_polish_ci NOT NULL
+  `kolor` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `kategorie_ocen`
+-- Dumping data for table `kategorie_ocen`
 --
 
 INSERT INTO `kategorie_ocen` (`id_kategorii`, `nazwa_kategorii`, `skrót_kategorii`, `waga`, `kolor`) VALUES
@@ -149,8 +149,8 @@ INSERT INTO `kategorie_ocen` (`id_kategorii`, `nazwa_kategorii`, `skrót_kategor
 
 CREATE TABLE `klasy` (
   `id_klasy` int(11) NOT NULL,
-  `nazwa_klasy` varchar(60) COLLATE utf8_polish_ci NOT NULL,
-  `skrot_klasy` varchar(20) COLLATE utf8_polish_ci NOT NULL,
+  `nazwa_klasy` varchar(60) NOT NULL,
+  `skrot_klasy` varchar(20) NOT NULL,
   `id_nauczyciela` int(11) DEFAULT NULL,
   `wirt` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
@@ -176,22 +176,22 @@ CREATE TABLE `nauczanie` (
 
 CREATE TABLE `nauczyciele` (
   `id_nauczyciela` int(11) NOT NULL,
-  `imie` varchar(20) COLLATE utf8_polish_ci NOT NULL,
-  `nazwisko` varchar(30) COLLATE utf8_polish_ci NOT NULL,
-  `login` text COLLATE utf8_polish_ci NOT NULL,
-  `email` text COLLATE utf8_polish_ci NOT NULL,
-  `haslo` text COLLATE utf8_polish_ci NOT NULL,
+  `imie` varchar(20) NOT NULL,
+  `nazwisko` varchar(30) NOT NULL,
+  `login` text NOT NULL,
+  `email` text NOT NULL,
+  `haslo` text NOT NULL,
   `kod_odzyskania` int(6) DEFAULT NULL,
   `admin` int(1) NOT NULL,
   `dezakt` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `nauczyciele`
+-- Dumping data for table `nauczyciele`
 --
 
 INSERT INTO `nauczyciele` (`id_nauczyciela`, `imie`, `nazwisko`, `login`, `email`, `haslo`, `kod_odzyskania`, `admin`, `dezakt`) VALUES
-(177, 'administrator', 'administrator', 'administrator_administrator', 'administrator@administrator.pl', '$2y$10$mhWJRWBYb58hpJA7jdIlqe8biv01kjpQ0NOCrB9SQ3Fd57ISBW6/S', NULL, 0, 0);
+(177, 'administrator', 'administrator', 'administrator', 'administrator@administrator.pl', '$2y$10$mhWJRWBYb58hpJA7jdIlqe8biv01kjpQ0NOCrB9SQ3Fd57ISBW6/S', NULL, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -210,7 +210,7 @@ CREATE TABLE `oceny` (
   `data` date NOT NULL,
   `id_nauczyciela` int(11) NOT NULL,
   `id_ucznia` int(11) NOT NULL,
-  `komentarz` varchar(100) COLLATE utf8_polish_ci NOT NULL
+  `komentarz` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
@@ -228,7 +228,7 @@ CREATE TABLE `oceny_zachowanie` (
   `data` date NOT NULL,
   `id_nauczyciela` int(11) NOT NULL,
   `id_ucznia` int(11) NOT NULL,
-  `komentarz` varchar(100) COLLATE utf8_polish_ci NOT NULL
+  `komentarz` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
@@ -246,7 +246,7 @@ CREATE TABLE `oceny_zachowanie2` (
   `data` date NOT NULL,
   `id_nauczyciela` int(11) NOT NULL,
   `id_ucznia` int(11) NOT NULL,
-  `komentarz` varchar(100) COLLATE utf8_polish_ci NOT NULL
+  `komentarz` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
@@ -264,7 +264,7 @@ CREATE TABLE `plan_lekcji` (
   `id_klasy` int(11) NOT NULL,
   `id_nauczyciela` int(11) NOT NULL,
   `id_przedmiotu` int(11) NOT NULL,
-  `sala` text COLLATE utf8_polish_ci NOT NULL
+  `sala` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
@@ -275,12 +275,12 @@ CREATE TABLE `plan_lekcji` (
 
 CREATE TABLE `przedmioty` (
   `id_przedmiotu` int(11) NOT NULL,
-  `nazwa_przedmiotu` varchar(70) COLLATE utf8_polish_ci DEFAULT NULL,
-  `skrot_przedmiotu` varchar(20) COLLATE utf8_polish_ci DEFAULT NULL
+  `nazwa_przedmiotu` varchar(70) DEFAULT NULL,
+  `skrot_przedmiotu` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `przedmioty`
+-- Dumping data for table `przedmioty`
 --
 
 INSERT INTO `przedmioty` (`id_przedmiotu`, `nazwa_przedmiotu`, `skrot_przedmiotu`) VALUES
@@ -311,7 +311,7 @@ CREATE TABLE `realizacja_programu` (
   `id_przedmiot` int(11) NOT NULL,
   `id_nauczyciel` int(11) NOT NULL,
   `lekcja` int(11) NOT NULL,
-  `temat` text COLLATE utf8_polish_ci NOT NULL
+  `temat` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
@@ -327,7 +327,7 @@ CREATE TABLE `semestry` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `semestry`
+-- Dumping data for table `semestry`
 --
 
 INSERT INTO `semestry` (`id`, `od`, `do`) VALUES
@@ -342,12 +342,12 @@ INSERT INTO `semestry` (`id`, `od`, `do`) VALUES
 
 CREATE TABLE `typ_zastepstw` (
   `id` int(11) NOT NULL,
-  `nazwa` text COLLATE utf8_polish_ci NOT NULL,
-  `skrot` text COLLATE utf8_polish_ci NOT NULL
+  `nazwa` text NOT NULL,
+  `skrot` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `typ_zastepstw`
+-- Dumping data for table `typ_zastepstw`
 --
 
 INSERT INTO `typ_zastepstw` (`id`, `nazwa`, `skrot`) VALUES
@@ -369,8 +369,8 @@ INSERT INTO `typ_zastepstw` (`id`, `nazwa`, `skrot`) VALUES
 CREATE TABLE `uczniowie` (
   `id_ucznia` int(11) NOT NULL,
   `nr_dziennik` int(3) NOT NULL,
-  `imie_ucznia` varchar(20) COLLATE utf8_polish_ci DEFAULT NULL,
-  `nazwisko_ucznia` varchar(30) COLLATE utf8_polish_ci DEFAULT NULL,
+  `imie_ucznia` varchar(20) DEFAULT NULL,
+  `nazwisko_ucznia` varchar(30) DEFAULT NULL,
   `id_klasy` int(11) DEFAULT NULL,
   `funkcja` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
@@ -385,8 +385,8 @@ CREATE TABLE `wirtualne_klasy` (
   `id` int(11) NOT NULL,
   `id_klasy` int(11) NOT NULL,
   `id_ucznia` int(11) NOT NULL,
-  `imie_ucznia` varchar(20) COLLATE utf8_polish_ci NOT NULL,
-  `nazwisko_ucznia` varchar(30) COLLATE utf8_polish_ci NOT NULL
+  `imie_ucznia` varchar(20) NOT NULL,
+  `nazwisko_ucznia` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
@@ -404,7 +404,7 @@ CREATE TABLE `zachowanie_ucznia` (
   `data` date NOT NULL,
   `id_nauczyciela` int(11) NOT NULL,
   `id_ucznia` int(11) NOT NULL,
-  `komentarz` varchar(100) COLLATE utf8_polish_ci NOT NULL
+  `komentarz` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
@@ -422,7 +422,7 @@ CREATE TABLE `zastepstwa` (
   `data` date NOT NULL,
   `nr_lekcji` int(11) NOT NULL,
   `typ` int(11) NOT NULL,
-  `sala` text COLLATE utf8_polish_ci NOT NULL
+  `sala` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
@@ -577,129 +577,129 @@ ALTER TABLE `zastepstwa`
   ADD KEY `id_przedmiot` (`id_przedmiot`);
 
 --
--- AUTO_INCREMENT dla zrzuconych tabel
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT dla tabeli `changelog`
+-- AUTO_INCREMENT for table `changelog`
 --
 ALTER TABLE `changelog`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `frekwencja`
+-- AUTO_INCREMENT for table `frekwencja`
 --
 ALTER TABLE `frekwencja`
   MODIFY `id_frekwencji` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `kategorie_frekwencji`
+-- AUTO_INCREMENT for table `kategorie_frekwencji`
 --
 ALTER TABLE `kategorie_frekwencji`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT dla tabeli `kategorie_ocen`
+-- AUTO_INCREMENT for table `kategorie_ocen`
 --
 ALTER TABLE `kategorie_ocen`
   MODIFY `id_kategorii` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT dla tabeli `klasy`
+-- AUTO_INCREMENT for table `klasy`
 --
 ALTER TABLE `klasy`
   MODIFY `id_klasy` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `nauczanie`
+-- AUTO_INCREMENT for table `nauczanie`
 --
 ALTER TABLE `nauczanie`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `nauczyciele`
+-- AUTO_INCREMENT for table `nauczyciele`
 --
 ALTER TABLE `nauczyciele`
   MODIFY `id_nauczyciela` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
 
 --
--- AUTO_INCREMENT dla tabeli `oceny`
+-- AUTO_INCREMENT for table `oceny`
 --
 ALTER TABLE `oceny`
   MODIFY `id_oceny` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `oceny_zachowanie`
+-- AUTO_INCREMENT for table `oceny_zachowanie`
 --
 ALTER TABLE `oceny_zachowanie`
   MODIFY `id_oceny` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `oceny_zachowanie2`
+-- AUTO_INCREMENT for table `oceny_zachowanie2`
 --
 ALTER TABLE `oceny_zachowanie2`
   MODIFY `id_oceny` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `plan_lekcji`
+-- AUTO_INCREMENT for table `plan_lekcji`
 --
 ALTER TABLE `plan_lekcji`
   MODIFY `id_lekcji` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `przedmioty`
+-- AUTO_INCREMENT for table `przedmioty`
 --
 ALTER TABLE `przedmioty`
   MODIFY `id_przedmiotu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
--- AUTO_INCREMENT dla tabeli `przyp_wirt`
+-- AUTO_INCREMENT for table `przyp_wirt`
 --
 ALTER TABLE `przyp_wirt`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `realizacja_programu`
+-- AUTO_INCREMENT for table `realizacja_programu`
 --
 ALTER TABLE `realizacja_programu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `typ_zastepstw`
+-- AUTO_INCREMENT for table `typ_zastepstw`
 --
 ALTER TABLE `typ_zastepstw`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT dla tabeli `uczniowie`
+-- AUTO_INCREMENT for table `uczniowie`
 --
 ALTER TABLE `uczniowie`
   MODIFY `id_ucznia` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `wirtualne_klasy`
+-- AUTO_INCREMENT for table `wirtualne_klasy`
 --
 ALTER TABLE `wirtualne_klasy`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `zachowanie_ucznia`
+-- AUTO_INCREMENT for table `zachowanie_ucznia`
 --
 ALTER TABLE `zachowanie_ucznia`
   MODIFY `id_oceny` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT dla tabeli `zastepstwa`
+-- AUTO_INCREMENT for table `zastepstwa`
 --
 ALTER TABLE `zastepstwa`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Ograniczenia dla zrzutów tabel
+-- Constraints for dumped tables
 --
 
 --
--- Ograniczenia dla tabeli `frekwencja`
+-- Constraints for table `frekwencja`
 --
 ALTER TABLE `frekwencja`
   ADD CONSTRAINT `nauczyciel_obecnosc` FOREIGN KEY (`id_nauczyciel`) REFERENCES `nauczyciele` (`id_nauczyciela`),
@@ -707,26 +707,26 @@ ALTER TABLE `frekwencja`
   ADD CONSTRAINT `uczen_obecnosc` FOREIGN KEY (`id_ucznia`) REFERENCES `uczniowie` (`id_ucznia`);
 
 --
--- Ograniczenia dla tabeli `klasy`
+-- Constraints for table `klasy`
 --
 ALTER TABLE `klasy`
   ADD CONSTRAINT `naucz` FOREIGN KEY (`id_nauczyciela`) REFERENCES `nauczyciele` (`id_nauczyciela`);
 
 --
--- Ograniczenia dla tabeli `nauczanie`
+-- Constraints for table `nauczanie`
 --
 ALTER TABLE `nauczanie`
   ADD CONSTRAINT `klasy_nauczanie` FOREIGN KEY (`id_klasy`) REFERENCES `klasy` (`id_klasy`);
 
 --
--- Ograniczenia dla tabeli `oceny`
+-- Constraints for table `oceny`
 --
 ALTER TABLE `oceny`
   ADD CONSTRAINT `ocena_nauczyciel` FOREIGN KEY (`id_nauczyciela`) REFERENCES `nauczyciele` (`id_nauczyciela`),
   ADD CONSTRAINT `ocena_uczen` FOREIGN KEY (`id_ucznia`) REFERENCES `uczniowie` (`id_ucznia`);
 
 --
--- Ograniczenia dla tabeli `plan_lekcji`
+-- Constraints for table `plan_lekcji`
 --
 ALTER TABLE `plan_lekcji`
   ADD CONSTRAINT `plan_lekcji_ibfk_1` FOREIGN KEY (`id_klasy`) REFERENCES `klasy` (`id_klasy`),
@@ -734,20 +734,20 @@ ALTER TABLE `plan_lekcji`
   ADD CONSTRAINT `plan_lekcji_ibfk_3` FOREIGN KEY (`id_przedmiotu`) REFERENCES `przedmioty` (`id_przedmiotu`);
 
 --
--- Ograniczenia dla tabeli `przyp_wirt`
+-- Constraints for table `przyp_wirt`
 --
 ALTER TABLE `przyp_wirt`
   ADD CONSTRAINT `przyp_wirt_ibfk_1` FOREIGN KEY (`id_macierz`) REFERENCES `klasy` (`id_klasy`),
   ADD CONSTRAINT `przyp_wirt_ibfk_2` FOREIGN KEY (`id_wirt`) REFERENCES `klasy` (`id_klasy`);
 
 --
--- Ograniczenia dla tabeli `uczniowie`
+-- Constraints for table `uczniowie`
 --
 ALTER TABLE `uczniowie`
   ADD CONSTRAINT `klasy` FOREIGN KEY (`id_klasy`) REFERENCES `klasy` (`id_klasy`);
 
 --
--- Ograniczenia dla tabeli `zastepstwa`
+-- Constraints for table `zastepstwa`
 --
 ALTER TABLE `zastepstwa`
   ADD CONSTRAINT `zastepstwa_ibfk_1` FOREIGN KEY (`id_klasy`) REFERENCES `klasy` (`id_klasy`),
