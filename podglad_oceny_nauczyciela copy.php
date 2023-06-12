@@ -14,10 +14,10 @@ if (!isset($_SESSION['zalogowany'])){
     <title>Podgląd ocen</title>
     <link rel="stylesheet" href="styl6.css">
 </head>
-<body onload='kategorie()'>
+<body>
     <div id="kontener">
         <div id="naglowek1">
-        <a href="\dziennik_lekcyjny\dziennik.php">Powrót do strony głównej <br></a>
+        <a href="\dziennik_lekcyjny\moje_przedmioty.php">Powrót do nauczanych przedmiotów <br></a>
 
         </div>
         <div id="naglowek2">
@@ -26,104 +26,144 @@ if (!isset($_SESSION['zalogowany'])){
         </div>
         
         <div id='wybierz'>
-        <form action="" method='post'>
+        
         <?php
-            $login=$_SESSION['login'];
+            
             require "connect.php";
 
             $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
-            $zapytanie11="SELECT DISTINCT k.skrot_klasy as klasa FROM nauczanie n inner join klasy k on n.id_klasy=k.id_klasy inner join przedmioty p on n.id_przedmiot=p.id_przedmiotu inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where na.login='$login';";
-            $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
 
-            if ($wyslij11->num_rows>0){
-            echo "klasa: <select name='klasy' onchange='this.form.submit()'>";
-            echo "<option value=''</option>";
-            while($row11=mysqli_fetch_array($wyslij11)){
-                echo "<option>".$row11['klasa']."</option>";
+            if(isset($_POST['id_klasy'])){
+            $_SESSION['id_klasy']=$_POST['id_klasy'];
+            $_SESSION['id_przedmiot']=$_POST['id_przedmiot'];
+
+            $id_klasy=$_SESSION['id_klasy'];
+            $id_przedmiot=$_SESSION['id_przedmiot'];
             }
-            echo "</select>";
-            }else{
-                echo "Nie uczysz w żadnej klasie";
+            if(!isset($_POST['id_klasy'])){
+    
+                $id_klasy=$_SESSION['id_klasy'];
+                $id_przedmiot=$_SESSION['id_przedmiot'];
             }
+
             
-            mysqli_close($polaczenie);
-                ?>
-                <br>
-            <?php
-                if(!empty($_POST['klasy'])){
-        
-                $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
-                $skrot_klasy=$_POST['klasy'];
-            
-                
-                $zapytanie13="SELECT id_klasy from klasy where skrot_klasy='".$skrot_klasy."';";
-                $wyslij13=mysqli_query($polaczenie,$zapytanie13);  
-            
-            
-                while($row13=mysqli_fetch_array($wyslij13)){
-                    $id_klasy=$row13['id_klasy'];
-                }
-            
-            
-                $zapytanie10="SELECT concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia) as uczen FROM uczniowie where id_klasy=$id_klasy order by concat(nazwisko_ucznia, ' ', imie_ucznia) asc;";
+            echo "<br>";
+    
+
+            $zapytanie10="SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM uczniowie where id_klasy=$id_klasy UNION SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM wirtualne_klasy where id_klasy=$id_klasy order by uczen asc;";
+
                 $wyslij10=mysqli_query($polaczenie,$zapytanie10);  
+
             
-                echo "uczeń: <select name='uczen'>";
+            echo "<form action='' method='post'>";
+                echo "uczeń: <select name='uczen' onchange='this.form.submit()'>";
                 echo "<option value=''</option>";
                 while($row10=mysqli_fetch_array($wyslij10)){
                     echo "<option>".$row10[0]."</option>";
                 }
                 echo "</select><br>";
+
             
-                    $zapytanie="SELECT DISTINCT p.nazwa_przedmiotu as przedmiot FROM nauczanie n inner join klasy k on n.id_klasy=k.id_klasy inner join przedmioty p on n.id_przedmiot=p.id_przedmiotu 
-                    inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where k.skrot_klasy='$skrot_klasy' and na.login='$login';";
-                    $wyslij=mysqli_query($polaczenie,$zapytanie);
+            echo "<input type='hidden' name='id_przedmiot' value='$id_przedmiot'>";
             
-                    echo "przedmiot: <select name='przedmiot' onchange='this.form.submit()'>";
-                    echo "<option value=''</option>";
-                    while($row=mysqli_fetch_array($wyslij)){
-                        echo "<option>".$row[0]."</option>";
-                    }
-                    echo "</select>";
-
-
-              
-
-                mysqli_close($polaczenie);
+            echo"</form>";
+            
+            mysqli_close($polaczenie);
                 
-                }
-                if((!empty($_POST['przedmiot']))){
+            
+                if((!empty($_POST['uczen']))){
+                    require "connect.php";
+
+                    $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
                     $uczen=@$_POST['uczen'];
-                    $przedmiot=@$_POST['przedmiot'];
-                    echo "<br><b>Przedmiot: </b>". $przedmiot. "<br>";
+                    $_SESSION['uczen']=$uczen;
+                    $id_przedmiot=@$_POST['id_przedmiot'];
+
+                    $zapytanie1="SELECT nazwa_klasy from klasy where id_klasy=".$_SESSION['id_klasy'].";";
+
+                    
+                    $wyslij1=mysqli_query($polaczenie,$zapytanie1);
+                    while($row1=mysqli_fetch_array($wyslij1)){
+                        $klasa=$row1[0];
+                        $_SESSION['klasa']=$klasa;
+                    }
+
+                    $zapytanie11="SELECT nazwa_przedmiotu from przedmioty where id_przedmiotu=$id_przedmiot;";
+                    
+                    $wyslij11=mysqli_query($polaczenie,$zapytanie11);
+                    while($row11=mysqli_fetch_array($wyslij11)){
+                        $przedmiot=$row11[0];
+                        $_SESSION['przedmiot']=$przedmiot;
+                    }
+
+
+
+                    echo "<br><b>Przedmiot: </b>". $przedmiot.", ".$klasa. "<br>";
                     echo "<b>Uczeń: </b>". $uczen;
                 }
             ?>
         
-            </form>
+            
             <br>
           
         </div>
         <div id="glowny1">
 
             <?php
-        if(!empty($_POST['przedmiot'])){
+        if(!empty($_POST['uczen'])){
+            $login=$_SESSION['login'];
             $uczen=@$_POST['uczen'];
-            $przedmiot=@$_POST['przedmiot'];
+            $id_przedmiotu=@$_POST['id_przedmiot'];
+            require "connect.php";
+
+            $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
+
+            $zapytanie30="SELECT concat(na.nazwisko, ' ', na.imie) as nauczyciel from nauczanie n inner JOIN nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where id_klasy=".$_SESSION['id_klasy']." and id_przedmiot=$id_przedmiotu";
+            $wyslij30=mysqli_query($polaczenie,$zapytanie30);
+            if ($wyslij30->num_rows>0){
+            while($row30=mysqli_fetch_array($wyslij30)){
+                $nauczajacy=$row30[0];
+            }
+            }else{
+                $nauczajacy="";
+            }
 
             echo "<h3>Semestr 1</h3>";
 
-            echo "<br>";
-    
+            $zapytanie3="SELECT id_ucznia FROM uczniowie where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)='$uczen';";
+            $wyslij3=mysqli_query($polaczenie,$zapytanie3);
+            while($row3=mysqli_fetch_array($wyslij3)){
+                $id_ucznia=$row3[0];
+            }
+
+            $zapytanie4="SELECT count(*) from frekwencja where id_przedmiot=$id_przedmiot and id_ucznia=$id_ucznia and typ_ob in('zw','sp','ob') and semestr=1;";
+
+            
+            $wyslij4=mysqli_query($polaczenie,$zapytanie4);
+            while($row4=mysqli_fetch_array($wyslij4)){
+                $obecnosc=$row4[0];
+            }
+
+            $zapytanie5="SELECT count(*) from frekwencja where id_przedmiot=$id_przedmiot and id_ucznia=$id_ucznia and typ_ob in('u','nb') and semestr=1;";
+
+            $wyslij5=mysqli_query($polaczenie,$zapytanie5);
+            while($row5=mysqli_fetch_array($wyslij5)){
+                $nieobecnosc=$row5[0];
+            }
+            if($nieobecnosc+$obecnosc==0){
+                echo"<br><b>Frekwencja:</b> 0%<br>";
+            }else{
+                echo "<br><b>Frekwencja:</b> ".round(($obecnosc/($nieobecnosc+$obecnosc)*100),2)."%<br>";
+            }
             
             $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
             $zapytanie1="SELECT oceny.id_oceny as id_oceny, oceny.ocena as ocena, kategorie_ocen.skrót_kategorii as kategoria, kategorie_ocen.nazwa_kategorii as nazwa_kategorii, concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as dodal, oceny.komentarz as komentarz, oceny.data as data, nauczyciele.login, oceny.waga as waga, kategorie_ocen.kolor as kolor from oceny 
             inner join przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie on oceny.id_ucznia=uczniowie.id_ucznia inner join kategorie_ocen on oceny.id_kategorii=kategorie_ocen.id_kategorii 
-            inner join nauczyciele on oceny.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.nazwa_przedmiotu='$przedmiot' and semestr=1 order by data asc;";
-
+            inner join nauczyciele on oceny.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.id_przedmiotu='$id_przedmiotu' and semestr=1 order by data asc;";
+            
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
             if ($wyslij1->num_rows>0){
-                echo "<b>Średnia ważona ocen: </b>";
+                echo "<b>Śródroczna średnia ważona ocen: </b>";
     
                 $zapytanie2="SELECT round((SUM(ocena*oceny.waga)/SUM(oceny.waga)),2) as srednia from oceny inner join 
                 przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie 
@@ -131,7 +171,7 @@ if (!isset($_SESSION['zalogowany'])){
                 oceny.id_kategorii=kategorie_ocen.id_kategorii inner join nauczyciele on 
                 oceny.id_nauczyciela=nauczyciele.id_nauczyciela where 
                 concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' 
-                and przedmioty.nazwa_przedmiotu='$przedmiot' and kategorie_ocen.id_kategorii not in (5,6,7,8) and semestr=1 and oceny.ocena between 1 and 6;";
+                and przedmioty.id_przedmiotu='$id_przedmiotu' and kategorie_ocen.id_kategorii not in (5,6,7,8) and semestr=1 and oceny.ocena between 1 and 6;";
                 $wyslij2=mysqli_query($polaczenie,$zapytanie2);  
         
                 while($row2=mysqli_fetch_array($wyslij2)){
@@ -141,37 +181,62 @@ if (!isset($_SESSION['zalogowany'])){
                         echo $row2[0];
                     }
                 }
+
                 echo "<table>";
-                echo "<tr><th>ocena</th><th>kategoria</th><th>waga</th><th>Komentarz</th><th>data</th><th>dodał</th><th>usuń</th></tr>";
+                echo "<tr><th>ocena</th><th>kategoria</th><th>waga</th><th>Komentarz</th><th>data</th>";
+                if($nauczajacy==""){
+                    echo"";
+                }
+                else{
+                    echo"<th>nauczyciel</th>";
+                }
+                echo"<th>dodał</th><th>usuń</th></tr>";
                 while($row1=mysqli_fetch_array($wyslij1)){
                     echo "<tr style='background-color:".$row1['kolor'].";'><td id=".$row1['ocena'].">";
-                    if($row1['ocena']==1.5){
-                        echo "1+";
-                    }else if ($row1['ocena']==1.75){
-                        echo "2-";
-                    }else if ($row1['ocena']==2.5){
-                        echo "2+";
-                    }else if ($row1['ocena']==2.75){
-                        echo "3-";
-                    }else if ($row1['ocena']==3.5){
-                        echo "3+";
-                    }else if ($row1['ocena']==3.75){
-                        echo "4-";
-                    }else if ($row1['ocena']==4.5){
-                        echo "4+";
-                    }else if ($row1['ocena']==4.75){
-                        echo "5-";
-                    }else if ($row1['ocena']==5.5){
-                        echo "5+";
-                    }else if ($row1['ocena']==5.75){
-                        echo "6-";
-                    }else if ($row1['ocena']==0.5){
-                        echo "+";
-                    }else if ($row1['ocena']==0.25){
-                        echo "-";
-                    }else{
-                        echo $row1['ocena'];
-                    }
+                          if($row1['ocena']==1.5){
+                    echo "1+";
+                }else if ($row1['ocena']==1.75){
+                    echo "2-";
+                }else if ($row1['ocena']==2.5){
+                    echo "2+";
+                }else if ($row1['ocena']==2.75){
+                    echo "3-";
+                }else if ($row1['ocena']==3.5){
+                    echo "3+";
+                }else if ($row1['ocena']==3.75){
+                    echo "4-";
+                }else if ($row1['ocena']==4.5){
+                    echo "4+";
+                }else if ($row1['ocena']==4.75){
+                    echo "5-";
+                }else if ($row1['ocena']==5.5){
+                    echo "5+";
+                }else if ($row1['ocena']==5.75){
+                    echo "6-";
+                }else if ($row1['ocena']==0.5){
+                    echo "+";
+                }else if ($row1['ocena']==0.25){
+                    echo "-";
+                }else if ($row1['ocena']==0.01){
+                    echo "nk";
+                }else if ($row1['ocena']==0.02){
+                    echo "zw";
+                }else if ($row1['ocena']==1.00){
+                    echo "1";
+                }else if ($row1['ocena']==2.00){
+                    echo "2";
+                }else if ($row1['ocena']==3.00){
+                    echo "3";
+                }else if ($row1['ocena']==4.00){
+                    echo "4";
+                }else if ($row1['ocena']==5.00){
+                    echo "5";
+                }else if ($row1['ocena']==6.00){
+                    echo "6";
+                }else{
+                    echo (int)$row1['ocena'];
+                }
+
                     
            
                     echo "</td><td>".$row1['nazwa_kategorii']."</td><td>";
@@ -180,8 +245,14 @@ if (!isset($_SESSION['zalogowany'])){
                     }else{
                         echo $row1['waga'];
                     }
-                    echo"</td><td>".$row1['komentarz']."</td><td>".$row1['data']."</td><td>".$row1['dodal']."</td>";
-                    if($login==$row1['login']){
+                    echo"</td><td>".$row1['komentarz']."</td><td>".$row1['data']."</td>";
+                    if($nauczajacy==""){
+                        echo "";
+                    }else{
+                        echo "<td>".$nauczajacy."</td>";
+                    }
+                    echo"<td>".$row1['dodal']."</td>";
+                    if($login==$row1['login'] or $_SESSION['admin'] ==1){
                     echo"<td class='usuwanie'><form action='' method='post'><input type='hidden' name='id_oceny' value='".$row1['id_oceny']."'><input type='submit' name='usun' value='X'></form></td></tr>";
                     }else{
                         echo"<td></td></tr>";
@@ -203,23 +274,63 @@ if (!isset($_SESSION['zalogowany'])){
 
         <div id="glowny2">
         <?php
-        if(!empty($_POST['przedmiot'])){
+        if(!empty($_POST['uczen'])){
+            $login=$_SESSION['login'];
             $uczen=@$_POST['uczen'];
-            $przedmiot=@$_POST['przedmiot'];
+            $id_przedmiotu=@$_POST['id_przedmiot'];
+
+            require "connect.php";
+
+            $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
+
+            $zapytanie30="SELECT concat(na.nazwisko, ' ', na.imie) as nauczyciel from nauczanie n inner JOIN nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where id_klasy=".$_SESSION['id_klasy']." and id_przedmiot=$id_przedmiotu";
+            $wyslij30=mysqli_query($polaczenie,$zapytanie30);
+            if ($wyslij30->num_rows>0){
+            while($row30=mysqli_fetch_array($wyslij30)){
+                $nauczajacy=$row30[0];
+            }
+            }else{
+                $nauczajacy="";
+            }
+
 
             echo "<h3>Semestr 2</h3>";
-
-            echo "<br>";
     
             
             $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
             $zapytanie1="SELECT oceny.id_oceny as id_oceny, oceny.ocena as ocena, kategorie_ocen.skrót_kategorii as kategoria, kategorie_ocen.nazwa_kategorii as nazwa_kategorii, concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as dodal, oceny.komentarz as komentarz, oceny.data as data, nauczyciele.login, oceny.waga as waga, kategorie_ocen.kolor as kolor  from oceny 
             inner join przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie on oceny.id_ucznia=uczniowie.id_ucznia inner join kategorie_ocen on oceny.id_kategorii=kategorie_ocen.id_kategorii 
-            inner join nauczyciele on oceny.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.nazwa_przedmiotu='$przedmiot' and semestr=2 order by data asc;";
+            inner join nauczyciele on oceny.id_nauczyciela=nauczyciele.id_nauczyciela where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' and przedmioty.id_przedmiotu='$id_przedmiotu' and semestr=2 order by data asc;";
+
+            $zapytanie3="SELECT id_ucznia FROM uczniowie where concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)='$uczen';";
+            $wyslij3=mysqli_query($polaczenie,$zapytanie3);
+            while($row3=mysqli_fetch_array($wyslij3)){
+                $id_ucznia=$row3[0];
+            }
+
+            $zapytanie4="SELECT count(*) from frekwencja where id_przedmiot=$id_przedmiot and id_ucznia=$id_ucznia and typ_ob in('zw','sp','ob') and semestr=2;";
+
+
+            $wyslij4=mysqli_query($polaczenie,$zapytanie4);
+            while($row4=mysqli_fetch_array($wyslij4)){
+                $obecnosc=$row4[0];
+            }
+
+            $zapytanie5="SELECT count(*) from frekwencja where id_przedmiot=$id_przedmiot and id_ucznia=$id_ucznia and typ_ob in('u','nb') and semestr=2;";
+
+            $wyslij5=mysqli_query($polaczenie,$zapytanie5);
+            while($row5=mysqli_fetch_array($wyslij5)){
+                $nieobecnosc=$row5[0];
+            }
+            if($nieobecnosc+$obecnosc==0){
+                echo"<br><b>Frekwencja:</b> 0%<br>";
+            }else{
+                echo "<br><b>Frekwencja:</b> ".round(($obecnosc/($nieobecnosc+$obecnosc)*100),2)."%<br>";
+            }
 
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
             if ($wyslij1->num_rows>0){
-                echo "<b>Średnia ważona ocen: </b>";
+                echo "<b>Roczna średnia ważona ocen: </b>";
     
                 $zapytanie2="SELECT round((SUM(ocena*oceny.waga)/SUM(oceny.waga)),2) as srednia from oceny inner join 
                 przedmioty on oceny.id_przedmiotu=przedmioty.id_przedmiotu inner join uczniowie 
@@ -227,7 +338,7 @@ if (!isset($_SESSION['zalogowany'])){
                 oceny.id_kategorii=kategorie_ocen.id_kategorii inner join nauczyciele on 
                 oceny.id_nauczyciela=nauczyciele.id_nauczyciela where 
                 concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia)= '$uczen' 
-                and przedmioty.nazwa_przedmiotu='$przedmiot' and kategorie_ocen.id_kategorii not in (5,6,7,8) and semestr=2 and oceny.ocena between 1 and 6;";
+                and przedmioty.id_przedmiotu='$id_przedmiotu' and kategorie_ocen.id_kategorii not in (5,6,7,8) and oceny.ocena between 1 and 6;";
                 $wyslij2=mysqli_query($polaczenie,$zapytanie2);  
         
                 while($row2=mysqli_fetch_array($wyslij2)){
@@ -237,8 +348,16 @@ if (!isset($_SESSION['zalogowany'])){
                         echo $row2[0];
                     }
                 }
+
             echo "<table>";
-            echo "<tr><th>ocena</th><th>kategoria</th><th>waga</th><th>Komentarz</th><th>data</th><th>dodał</th><th>usuń</th></tr>";
+            echo "<tr><th>ocena</th><th>kategoria</th><th>waga</th><th>Komentarz</th><th>data</th>";
+            if($nauczajacy==""){
+                echo"";
+            }
+            else{
+                echo"<th>nauczyciel</th>";
+            }
+            echo"<th>dodał</th><th>usuń</th></tr>";
             while($row1=mysqli_fetch_array($wyslij1)){
                 echo "<tr style='background-color:".$row1['kolor'].";'><td id=".$row1['ocena'].">";
                 if($row1['ocena']==1.5){
@@ -265,18 +384,40 @@ if (!isset($_SESSION['zalogowany'])){
                     echo "+";
                 }else if ($row1['ocena']==0.25){
                     echo "-";
+                }else if ($row1['ocena']==0.01){
+                    echo "nk";
+                }else if ($row1['ocena']==0.02){
+                    echo "zw";
+                }else if ($row1['ocena']==1.00){
+                    echo "1";
+                }else if ($row1['ocena']==2.00){
+                    echo "2";
+                }else if ($row1['ocena']==3.00){
+                    echo "3";
+                }else if ($row1['ocena']==4.00){
+                    echo "4";
+                }else if ($row1['ocena']==5.00){
+                    echo "5";
+                }else if ($row1['ocena']==6.00){
+                    echo "6";
                 }else{
                     echo $row1['ocena'];
                 }
-                
+
                 echo "</td><td>".$row1['nazwa_kategorii']."</td><td>";
                 if($row1['waga']==0 or $row1['ocena']==0.5 or $row1['ocena']==0.25){
                     echo "";
                 }else{
                     echo $row1['waga'];
                 }
-                echo"</td><td>".$row1['komentarz']."</td><td>".$row1['data']."</td><td>".$row1['dodal']."</td>";
-                if($login==$row1['login']){
+                echo"</td><td>".$row1['komentarz']."</td><td>".$row1['data']."</td>";
+                if($nauczajacy==""){
+                    echo "";
+                }else{
+                    echo "<td>".$nauczajacy."</td>";
+                }
+                echo"<td>".$row1['dodal']."</td>";
+                if($login==$row1['login'] or $_SESSION['admin'] ==1){
                 echo"<td class='usuwanie'><form action='' method='post'><input type='hidden' name='id_oceny' value='".$row1['id_oceny']."'><input type='submit' name='usun' value='X'></form></td></tr>";
                 }else{
                     echo"<td></td></tr>";
@@ -297,7 +438,13 @@ if (!isset($_SESSION['zalogowany'])){
         </div>
 
         <div id="stopka">
-        <a href="\dziennik_lekcyjny\dodaj_oceny.php" onclick="window.open('dodaj_oceny.php', 'nazwa', 'menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=no,reszable=no,fullscreen=no,channelmode=no,width=350,height=400').focus(); return false">Dodaj ocenę</a>
+            <?php
+            if(!empty($_POST['uczen'])){
+                echo <<<END
+                    <a href="\dziennik_lekcyjny\dodaj_oceny_ucz.php" onclick="window.open('dodaj_oceny_ucz.php', 'nazwa', 'menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=no,reszable=no,fullscreen=no,channelmode=no,width=350,height=400').focus(); return false">Dodaj ocenę</a>
+                END;
+        }
+        ?>
         </div>
     </div>
 
@@ -309,7 +456,7 @@ if (!isset($_SESSION['zalogowany'])){
                 $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
                 $zapytanie="DELETE FROM oceny WHERE id_oceny='$id_oceny';";
                 $wyslij=mysqli_query($polaczenie,$zapytanie);
-            
+          
                 }
                 ?>
 

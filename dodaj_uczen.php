@@ -22,11 +22,11 @@ if ($_SESSION['admin'] !=1){
     <form action="" method="post">
     <h4 class="inside">Wprowadź dane ucznia:</h4>
     <table>
-    <tr><td colspan="2" class="kolumna3"></td></tr>
-    <tr><td class="kolumna1">Nazwisko:</td><td class="kolumna2"><input name="nazwisko_ucznia" type="text" placeholder="Nazwisko" required></td></tr>    
-    <tr><td class="kolumna1">Imię:</td><td class="kolumna2"><input name="imie_ucznia" type="text" placeholder="Imie" required></td></tr>
+    <tr><td colspan="2" class="3"></td></tr>
+    <tr><td class="1">Nazwisko:</td><td class="2"><input name="nazwisko_ucznia" type="text" placeholder="Nazwisko" required></td></tr>    
+    <tr><td class="1">Imię:</td><td class="2"><input name="imie_ucznia" type="text" placeholder="Imie" required></td></tr>
 
-    <tr><td class="kolumna1">Klasa:</td>
+    <tr><td class="1">Klasa:</td>
     <?php
     require "connect.php";
 
@@ -35,7 +35,7 @@ if ($_SESSION['admin'] !=1){
     $zapytanie = "SELECT * FROM klasy where wirt=0 order by skrot_klasy;";
     $wyslij = mysqli_query($polaczenie,$zapytanie);
 
-    echo "<td class='kolumna2'>";
+    echo "<td class='2'>";
     echo'<select name="skrot_klasy">';
     echo "<option></option>";
     while($row = mysqli_fetch_array($wyslij)) {
@@ -47,7 +47,7 @@ if ($_SESSION['admin'] !=1){
     echo'</select></td></tr>';
 
     echo <<<END
-    <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr></table>
+    <tr class='inside'><td class="3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr></table>
     END;
 
     if(!empty($_POST['nazwisko_ucznia'])||!empty($_POST['skrot_klasy']))

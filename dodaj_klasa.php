@@ -23,9 +23,9 @@ if ($_SESSION['admin'] !=1){
 
         <h4 class="inside">Dodaj klase</h4>
         <table>
-        <tr><td class='kolumna3' colspan="2"></td></tr>
-            <tr><td class='kolumna1'>Nazwa klasy: </td><td class='kolumna2'><input name="nazwa_klasy" type="text" required></td></tr>
-            <tr><td class='kolumna1'>Skrót klasy:</td><td class='kolumna2'><input name="skrot_klasy" type="text" required></td></tr>     
+        <tr><td class='3' colspan="2"></td></tr>
+            <tr><td class='1'>Nazwa klasy: </td><td class='2'><input name="nazwa_klasy" type="text" required></td></tr>
+            <tr><td class='1'>Skrót klasy:</td><td class='2'><input name="skrot_klasy" type="text" required></td></tr>     
            
         
         
@@ -41,7 +41,7 @@ if ($_SESSION['admin'] !=1){
         $zapytanie = "SELECT id_nauczyciela, concat(nazwisko,' ', imie) as nauczyciel FROM `nauczyciele` order by nauczyciel asc;";
         $wyslij=mysqli_query($polaczenie,$zapytanie);
 
-        echo "<tr><td class='kolumna1'>Wychowawca:</td><td class='kolumna2'>";
+        echo "<tr><td class='1'>Wychowawca:</td><td class='2'>";
         echo "<select name='nauczyciel' required>";
         echo "<option value=''</option>";
         while($row=mysqli_fetch_array($wyslij)){
@@ -50,7 +50,7 @@ if ($_SESSION['admin'] !=1){
         }
         echo('</select></td></tr>');
         echo <<<END
-        <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr></table>
+        <tr class='inside'><td class="3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr></table>
         END;
 
         $nauczyciel= @$_POST['nauczyciel'];

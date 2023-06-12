@@ -19,7 +19,7 @@ if (!isset($_SESSION['zalogowany'])){
         <h4 class="inside">Dodaj ocenę </h4>
         <table>
         <form action="" method='post'>
-        <tr><td class='kolumna3' colspan="2"></td></tr>
+        <tr><td class='3' colspan="2"></td></tr>
         <?php
             $login=$_SESSION['login'];
 
@@ -33,7 +33,7 @@ if (!isset($_SESSION['zalogowany'])){
                 $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
 
                 if ($wyslij11->num_rows>0){
-                echo "<tr><td class='kolumna1'>klasa:</td> <td class='kolumna2'>";
+                echo "<tr><td class='1'>klasa:</td> <td class='2'>";
                     if(empty($_POST['klasy'])){
                     echo"<select name='klasy' onchange='this.form.submit()' required>";
                     echo "<option value=''</option>";
@@ -54,7 +54,7 @@ if (!isset($_SESSION['zalogowany'])){
                 $zapytanie110="SELECT DISTINCT k.skrot_klasy as klasa FROM nauczanie n inner join klasy k on n.id_klasy=k.id_klasy inner join przedmioty p on n.id_przedmiot=p.id_przedmiotu inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela order by klasa asc;";
                 $wyslij110=mysqli_query($polaczenie,$zapytanie110);  
 
-                echo "<tr><td class='kolumna1'>klasa:</td> <td class='kolumna2'>";
+                echo "<tr><td class='1'>klasa:</td> <td class='2'>";
                 if(empty($_POST['klasy'])){
                     echo"<select name='klasy' onchange='this.form.submit()' required>";
                     echo "<option value=''</option>";
@@ -69,7 +69,7 @@ if (!isset($_SESSION['zalogowany'])){
 
             if(empty($_POST['klasy'])){
             echo <<<END
-            <tr class='inside'><td class='kolumna3' colspan='2'><input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
+            <tr class='inside'><td class='3' colspan='2'><input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
             END;
             }
             mysqli_close($polaczenie);
@@ -101,7 +101,7 @@ if (!isset($_SESSION['zalogowany'])){
 
             $wyslij10=mysqli_query($polaczenie,$zapytanie10);  
             
-            echo "<tr><td class='kolumna1'>uczeń:</td> <td class='kolumna2'><select name='uczen' required> ";
+            echo "<tr><td class='1'>uczeń:</td> <td class='2'><select name='uczen' required> ";
             echo "<option value=''</option>";
             while($row10=mysqli_fetch_array($wyslij10)){
                 echo "<option>".$row10[0]."</option>";
@@ -114,7 +114,7 @@ if (!isset($_SESSION['zalogowany'])){
                 inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where k.skrot_klasy='$skrot_klasy' and na.login='$login' order by p.nazwa_przedmiotu asc;";
                 $wyslij=mysqli_query($polaczenie,$zapytanie);
         
-                echo "<tr><td class='kolumna1'>przedmiot:</td> <td class='kolumna2'>";
+                echo "<tr><td class='1'>przedmiot:</td> <td class='2'>";
                 if ($wyslij->num_rows>0){
                 echo"<select name='przedmiot' required>";
                 echo "<option value=''</option>";
@@ -132,7 +132,7 @@ if (!isset($_SESSION['zalogowany'])){
                 inner join nauczyciele na on n.id_nauczyciel=na.id_nauczyciela where k.skrot_klasy='$skrot_klasy' order by p.nazwa_przedmiotu asc;";
                 $wyslij=mysqli_query($polaczenie,$zapytanie);
             
-                echo "<tr><td class='kolumna1'>przedmiot:</td> <td class='kolumna2'>";
+                echo "<tr><td class='1'>przedmiot:</td> <td class='2'>";
                 if ($wyslij->num_rows>0){
                 echo"<select name='przedmiot' required>";
                 echo "<option value=''</option>";
@@ -149,7 +149,7 @@ if (!isset($_SESSION['zalogowany'])){
             
             $wyslij5=mysqli_query($polaczenie,$zapytanie5);
             
-            echo "<tr><td class='kolumna1'>kategoria:</td> <td class='kolumna2'><select name='kategoria' required>";
+            echo "<tr><td class='1'>kategoria:</td> <td class='2'><select name='kategoria' required>";
             echo "<option value=''</option>";
             while($row5=mysqli_fetch_array($wyslij5)){
                 echo "<option>".$row5['nazwa_kategorii']."</option>";
@@ -157,7 +157,7 @@ if (!isset($_SESSION['zalogowany'])){
             echo "</select></td></tr>";        
             
             echo <<<END
-            <tr><td class='kolumna1'>ocena</td><td class='kolumna2'>
+            <tr><td class='1'>ocena</td><td class='2'>
             <input list='oceny' name='ocena'>
             <datalist id='oceny' required>
                 <option>1</option>
@@ -193,7 +193,7 @@ if (!isset($_SESSION['zalogowany'])){
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);
     
             $login=$_SESSION['login'];
-            echo "<tr><td class='kolumna1'>nauczyciel:</td> <td class='kolumna2'>";
+            echo "<tr><td class='1'>nauczyciel:</td> <td class='2'>";
             while($row1=mysqli_fetch_array($wyslij1)){
                 echo $row1['nauczyciel']."<input type='hidden' value='$row1[1]' name='nauczyciel'>";  
             }
@@ -202,18 +202,18 @@ if (!isset($_SESSION['zalogowany'])){
             $d=mktime();
             $date=date("Y-m-d", $d);
 
-            echo "<tr><td class='kolumna1'>data</td><td class='kolumna2'><input type='date' value='$date' name='data' required></td></tr>";
+            echo "<tr><td class='1'>data</td><td class='2'><input type='date' value='$date' name='data' required></td></tr>";
 
-            echo "<tr><td class='kolumna1'>komentarz</td><td class='kolumna2'><textarea name='komentarz'></textarea></td></tr>";
+            echo "<tr><td class='1'>komentarz</td><td class='2'><textarea name='komentarz'></textarea></td></tr>";
             
             if(isset($nie_uczy)){
                 echo <<<END
-                <tr class='inside'><td class='kolumna3' colspan='2'><input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
+                <tr class='inside'><td class='3' colspan='2'><input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
                 END;
             }
             if(!isset($nie_uczy)){
                 echo <<<END
-                <tr class='inside'><td class='kolumna3' colspan='2'>
+                <tr class='inside'><td class='3' colspan='2'>
                 <input value='Dodaj' type='submit' name='wysylacz'>
                 <input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
                 END;
@@ -322,7 +322,7 @@ if (!isset($_SESSION['zalogowany'])){
             $semestr=$row20[0];
         }
 
-        if($ocena<1){
+        if($ocena<1 and $ocena>6){
             $nie_licz=1;
         }else{
             $nie_licz=0;

@@ -19,7 +19,7 @@ if (!isset($_SESSION['zalogowany'])){
         <h4 class="inside">Dodaj ocenę </h4>
         <table>
         <form action="" method='post'>
-        <tr><td class='kolumna3' colspan="2"></td></tr>
+        <tr><td class='3' colspan="2"></td></tr>
         <?php
             require "connect.php";
 
@@ -27,7 +27,7 @@ if (!isset($_SESSION['zalogowany'])){
             $zapytanie11="SELECT skrot_klasy FROM klasy where wirt=0 order by skrot_klasy asc;";
             $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
 
-            echo "<tr><td class='kolumna1'>klasa:</td> <td class='kolumna2'>";
+            echo "<tr><td class='1'>klasa:</td> <td class='2'>";
             if(empty($_POST['klasy'])){
             echo"<select name='klasy' onchange='this.form.submit()'>";
             echo "<option value=''</option>";
@@ -42,7 +42,7 @@ if (!isset($_SESSION['zalogowany'])){
             
             if(empty($_POST['klasy'])){
                 echo <<<END
-                <tr class='inside'><td class='kolumna3' colspan='2'><input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
+                <tr class='inside'><td class='3' colspan='2'><input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
                 END;
                 }
         ?>     
@@ -55,7 +55,7 @@ if (!isset($_SESSION['zalogowany'])){
             if(!empty($_POST['klasy'])){
             echo<<<END
             
-                <tr><td class='kolumna1'>ocena</td><td class='kolumna2'>
+                <tr><td class='1'>ocena</td><td class='2'>
                     <select name='ocena'>
                         <option></option>
                         <option>wzorowe</option>
@@ -89,7 +89,7 @@ if (!isset($_SESSION['zalogowany'])){
             $zapytanie10="SELECT concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM uczniowie where id_klasy=$id_klasy order by uczen asc;";
             $wyslij10=mysqli_query($polaczenie,$zapytanie10);  
             
-            echo "<tr><td class='kolumna1'>uczeń:</td> <td class='kolumna2'><select name='uczen'>";
+            echo "<tr><td class='1'>uczeń:</td> <td class='2'><select name='uczen'>";
             echo "<option value=''</option>";
             while($row10=mysqli_fetch_array($wyslij10)){
                 echo "<option>".$row10[0]."</option>";
@@ -102,7 +102,7 @@ if (!isset($_SESSION['zalogowany'])){
             
             $wyslij5=mysqli_query($polaczenie,$zapytanie5);
             
-            echo "<tr><td class='kolumna1'>kategoria:</td> <td class='kolumna2'><select name='kategoria'>";
+            echo "<tr><td class='1'>kategoria:</td> <td class='2'><select name='kategoria'>";
             echo "<option value=''</option>";
             while($row5=mysqli_fetch_array($wyslij5)){
                 echo "<option>".$row5['nazwa_kategorii']."</option>";
@@ -114,7 +114,7 @@ if (!isset($_SESSION['zalogowany'])){
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);
     
     
-            echo "<tr><td class='kolumna1'>nauczyciel:</td> <td class='kolumna2'>";
+            echo "<tr><td class='1'>nauczyciel:</td> <td class='2'>";
             while($row1=mysqli_fetch_array($wyslij1)){
                 echo $row1['nauczyciel']."<input type='hidden' value='$row1[1]' name='nauczyciel'>";
             }
@@ -123,13 +123,13 @@ if (!isset($_SESSION['zalogowany'])){
             $d=mktime();
             $date=date("Y-m-d", $d);
 
-            echo "<tr><td class='kolumna1'>data</td><td class='kolumna2'><input type='date' value='$date' name='data'></td></tr>";
+            echo "<tr><td class='1'>data</td><td class='2'><input type='date' value='$date' name='data'></td></tr>";
 
-            echo "<tr><td class='kolumna1'>komentarz</td><td class='kolumna2'><textarea name='komentarz'></textarea></td></tr>";
+            echo "<tr><td class='1'>komentarz</td><td class='2'><textarea name='komentarz'></textarea></td></tr>";
         
             mysqli_close($polaczenie);
             echo <<<END
-            <tr><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'><input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
+            <tr><td class="3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'><input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
             END;
         }
         ?> 

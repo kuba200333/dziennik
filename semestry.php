@@ -41,9 +41,10 @@ if ($_SESSION['admin'] !=1){
             $wyslij=mysqli_query($polaczenie,$zapytanie);
             
             echo "<table><form action='' method='post'><tr><td>Wybierz numer semestru: </td><td><select name='semestr'>";
-            while($row=mysqli_fetch_array($wyslij)){
-                echo "<option>".$row[0]."</option>";
-            }
+
+                echo "<option>1</option>";
+                echo "<option>2</option>";
+            
             echo "</select></td></tr>";
 
             echo "<tr><td>Czas trwania od: </td><td><input type='date' name='data_od'></td></tr>";
@@ -57,7 +58,7 @@ if ($_SESSION['admin'] !=1){
                 $od=$_POST['data_od'];
                 $do=$_POST['data_do'];
 
-                $zapytanie1="UPDATE semestry SET od='$od', do='$do' where id=$id";
+                $zapytanie1="INSERT INTO semestry VALUES ($id,'$od','$do');";
                 $wyslij1=mysqli_query($polaczenie,$zapytanie1);
             }
             ?>

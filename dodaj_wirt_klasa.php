@@ -19,48 +19,81 @@ if ($_SESSION['admin'] !=1){
 </head>
 <body>
     <div class="kontener">
-        <form action="" method="post">
+    <h2>Wybierz klasy:</h2>
+	<form method="post" action="">
+	<?php
+		// łączymy się z bazą danych
+		require "connect.php";
 
-        <h4 class="inside">Dodaj wirtualną klase</h4>
-        <table>
-        <tr><td class='kolumna3' colspan="2"></td></tr>
-            <tr><td class='kolumna1'>Nazwa klasy: </td><td class='kolumna2'><input name="nazwa_klasy" type="text" required></td></tr>
-            <tr><td class='kolumna1'>Skrót klasy:</td><td class='kolumna2'><input name="skrot_klasy" type="text" required></td></tr>     
-           
-        
-        
+                
+                $conn = @new mysqli($host, $db_user, $db_password, $db_name);
+		// sprawdzamy, czy połączenie się udało
+		if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+		}
+		// wykonujemy zapytanie do bazy danych
+		$sql = "SELECT id_klasy, nazwa_klasy, skrot_klasy FROM klasy WHERE wirt=0 ORDER BY skrot_klasy ASC";
+		$result = $conn->query($sql);
+		// wyświetlamy wyniki zapytania jako pola wyboru checkocena
+		if ($result->num_rows > 0) {
+		    while($row = $result->fetch_assoc()) {
+		        echo '<input type="checkocena" name="klasy[]" value="'.$row["id_klasy"].'">'.$row["nazwa_klasy"].' ('.$row["skrot_klasy"].')<br>';
+		    }
+		} else {
+		    echo "Brak wyników";
+		}
+		// zamykamy połączenie z bazą danych
+		$conn->close();
+	?>
+	<h2>Wprowadź dane dla wirtualnej klasy:</h2>
+	Nazwa klasy: <input type="text" name="nazwa_klasy"><br>
+	Skrót klasy: <input type="text" name="skrot_klasy"><br>
+	<input type="submit" name='wyslij' value="Wyślij">
+	</form>
     <?php
 
-        $nazwa_klasy= @$_POST['nazwa_klasy'];
-        $skrot_klasy= @$_POST['skrot_klasy'];
+    if(isset($_POST['wyslij'])){
+    // łączymy się z bazą danych
+    require "connect.php";
 
-        require "connect.php";
+                    
+    $conn = @new mysqli($host, $db_user, $db_password, $db_name);
+    // sprawdzamy, czy połączenie się udało
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
 
-        $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
+    // zapisujemy dane z formularza
+    $nazwa_klasy = $_POST["nazwa_klasy"];
+    $skrot_klasy = $_POST["skrot_klasy"];
 
-        echo <<<END
-        <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr></table>
-        END;
+    // dodajemy wirtualną klasę do bazy danych
+    $sql = "INSERT INTO klasy (id_klasy, nazwa_klasy, skrot_klasy, wirt) VALUES (null, '$nazwa_klasy', '$skrot_klasy', 1)";
+    if ($conn->query($sql) === TRUE) {
+        echo "Wirtualna klasa została dodana do bazy danych";
+    } else {
+        echo "Błąd dodawania wirtualnej klasy: " . $conn->error;
+    }
 
-        $nauczyciel= @$_POST['nauczyciel'];
+    // pobieramy id ostatnio dodanej klasy wirtualnej
+    $id_wirt = $conn->insert_id;
 
-        if(!empty($_POST['nazwa_klasy'])||!empty($_POST['skrot_klasy']))
-        {
-     
-        @$wynik="INSERT INTO klasy(id_klasy, nazwa_klasy, skrot_klasy, wirt) VALUES (null,'$nazwa_klasy','$skrot_klasy', 1)";
-        
-        $wyslij_wynik=mysqli_query($polaczenie,$wynik);
-
-            echo "<p id='add'>Dodano wirtualną klasę!</p>";
+    // przetwarzamy zaznaczone klasy z formularza
+    if(isset($_POST["klasy"])){
+        // wykonujemy pętlę po zaznaczonych klasy
+        foreach($_POST["klasy"] as $id_macierz){
+            // dodajemy rekord do tabeli przyp_wirt
+            $sql = "INSERT INTO przyp_wirt (id, id_macierz, id_wirt) VALUES (null, $id_macierz, $id_wirt)";
+            if ($conn->query($sql) !== TRUE) {
+                echo "Błąd dodawania przypisania wirtualnej klasy: " . $conn->error;
+            }
         }
-   
-        
+    }
 
-        mysqli_close($polaczenie);
-
-    ?>  <br>
-   
-    </form>
+    // zamykamy połączenie z bazą danych
+    $conn->close();
+}
+    ?>
     </div>
 </body>
 </html>

@@ -1,0 +1,158 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+    font-family: sans-serif;
+
+    box-sizing: border-box;
+    text-decoration: none;
+
+}
+body{
+    padding: 0;
+    margin: 0;
+    background-color: #C3C3C3;
+}
+#kontener {
+
+    height: 100vh;
+}
+#naglowek1{
+    width: 50%;
+    top: 0;
+    left: 0;
+    padding: 0 3rem;
+    background-color: #1F2232;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 15%;
+    float: left;
+}
+#naglowek2{
+    width: 50%;
+    top: 0;
+    left: 0;
+    padding: 0 3rem;
+    background-color: #1F2232;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 15%;
+    float: right;
+}
+
+
+#glowny{
+    clear: both;
+    height: 75%;
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(216, 205, 172);
+    float: left;
+    border: 1px solid white;
+    overflow: auto;
+
+}
+
+#stopka{
+    clear: both;
+    height: 10%;
+    top: 0;
+    left: 0;
+    padding: 0 3rem;
+    background-color: #1F2232;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+#glowny table{
+    width: 50%;
+    border: 1px solid white;
+    border-collapse: collapse;
+    margin: auto;
+    color: #1F2232;
+    
+}
+td{
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+    color: #1F2232;
+    padding: 2px;
+}
+th{
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+    color: #1F2232;
+    padding: 10px;
+}
+.srodek{
+    text-align: center;
+}
+h1{
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 20%;
+    
+}
+input{
+    color: black;
+}
+p>i{
+    color: red;
+}
+span.ocena {
+    height: 15px;
+    line-height: 15px;
+    min-width: 15px;
+    display: inline-block;
+    margin: 0 3px;
+    margin-top:1px;
+    text-align: center;
+    padding: 2px 3px;
+    font-size: 12px;
+    color: #000000;
+}
+span.ocena {
+    height: 15px;
+    line-height: 15px;
+    min-width: 15px;
+    display: inline-block;
+    margin: 0 3px;
+    margin-top:1px;
+    text-align: center;
+    padding: 2px 3px;
+}
+span.ocena a {
+    color: #000000;
+}
+
+span.ocena.positive-behaviour {
+   background-color: #8ae234;
+}
+
+span.ocena.negative-behaviour {
+   background-color: #ffa07a;
+}
+
+span.ocena-mapping {
+    height: 11px;
+    width: 11px;
+    min-width: 11px;
+    display: inline-block;
+    margin: 0 3px;
+    margin-top:1px;
+    text-align: center;
+    padding: 4px 4px;
+}
+#naglowek1 a{
+    color: white;
+}
+#naglowek2{
+    color: white;
+}

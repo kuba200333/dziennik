@@ -44,13 +44,13 @@ if (!isset($_SESSION['zalogowany'])){
                 $zapytanie12="SELECT concat(u.nazwisko_ucznia, ' ',u.imie_ucznia) FROM oceny o inner join uczniowie u on o.id_ucznia=u.id_ucznia where id_oceny=$id_oceny;";
                 $wyslij12=mysqli_query($polaczenie,$zapytanie12);  
                 while($row12=mysqli_fetch_array($wyslij12)){
-                    echo "<tr><td>Uczeń:</td> <td>".$row12[0]."</td></tr>";
+                    echo "<tr><th>Uczeń:</th> <td>".$row12[0]."</td></tr>";
                 }
                 $zapytanie12="SELECT nazwa_przedmiotu FROM oceny o inner join przedmioty p on o.id_przedmiotu=p.id_przedmiotu where id_oceny=$id_oceny;";
                 
                 $wyslij12=mysqli_query($polaczenie,$zapytanie12);  
                 while($row12=mysqli_fetch_array($wyslij12)){
-                    echo "<tr><td >Przedmiot:</td> <td >".$row12[0]."</td></tr>";
+                    echo "<tr><th>Przedmiot:</th> <td >".$row12[0]."</td></tr>";
                 }
 
                 $zapytanie1="SELECT * FROM oceny where id_oceny=$id_oceny;";
@@ -107,8 +107,9 @@ if (!isset($_SESSION['zalogowany'])){
                     }
                     }
 
+                    $stara_ocena=$ocena;
                 echo <<<END
-                <tr><td >Ocena:</td> <td ><input list='oceny' name='ocena' value=$ocena>
+                <tr><th>Ocena:</th> <td ><input list='oceny' name='ocena' value=$ocena>
                     <datalist id='oceny' required>
                     <option>1</option>
                     <option>1+</option>
@@ -139,14 +140,14 @@ if (!isset($_SESSION['zalogowany'])){
                 $wyslij15=mysqli_query($polaczenie,$zapytanie15);
 
                 while($row15=mysqli_fetch_array($wyslij15)){
-                    $kategoria=$row15['kategoria'];
+                    $stara_kategoria=$kategoria=$row15['kategoria'];
                 }
 
                 $zapytanie5="SELECT nazwa_kategorii FROM `kategorie_ocen` where id_kategorii not in (9,10) order by nazwa_kategorii asc;";
             
                 $wyslij5=mysqli_query($polaczenie,$zapytanie5);
                 
-                echo "<tr><td >kategoria:</td> <td ><select class='lewy' name='kategoria'required>";
+                echo "<tr><th>kategoria:</th> <td ><select class='lewy' name='kategoria' required>";
                 echo "<option class='lewy' value='$kategoria'>$kategoria</option>";
                 echo "<option class='lewy' value=''></option>";
                 while($row5=mysqli_fetch_array($wyslij5)){
@@ -159,18 +160,18 @@ if (!isset($_SESSION['zalogowany'])){
 
                 $wyslij1=mysqli_query($polaczenie,$zapytanie1);
                 while($row1=mysqli_fetch_array($wyslij1)){
-                    $data=$row1['data'];
+                    $stara_data=$data=$row1['data'];
                 }
 
-                echo "<tr><td >Data:</td> <td > <input type='date' name='data' value='$data'></td></tr>";
+                echo "<tr><th>Data:</th> <td > <input type='date' name='data' value='$data'></td></tr>";
      
                 $zapytanie1="SELECT komentarz from oceny where id_oceny=$id_oceny;";
                 $wyslij1=mysqli_query($polaczenie,$zapytanie1);
                 while($row1=mysqli_fetch_array($wyslij1)){
-                    $komentarz=$row1['komentarz'];
+                    $stary_komentarz=$komentarz=$row1['komentarz'];
                 }
 
-                echo "<tr><td>Komentarz:</td> <td > <input type='text' class='lewy' name='komentarz' value='$komentarz'></td></tr>";
+                echo "<tr><th>Komentarz:</th> <td > <input type='text' class='lewy' name='komentarz' value='$komentarz'></td></tr>";
                 echo "<tr><td colspan='2'>
                 <input type='submit' name='update' value='Zmień'>
                 <input type='submit' name='usun' value='Usuń'></form>";
@@ -180,9 +181,25 @@ if (!isset($_SESSION['zalogowany'])){
                 echo"</td></tr>";
                 
                 echo "</table>";
+
+         
+                $sql='SELECT c.typ, c.data, c.zmiana, concat(n.nazwisko, " ",n.imie) as nauczyciel FROM changelog c inner join nauczyciele n on c.zmieniajacy=n.id_nauczyciela where c.id_dane='.$id_oceny.';';
+ 
+                $wyslij=mysqli_query($polaczenie,$sql);
+                if ($wyslij->num_rows>0){
+                    echo "<br><h2>Historia modyfikacji</h2>";
+                    echo "<table>";
+                    echo"<tr><th>Data:</th><th>Użytkownik:</th><th>Typ</th><th>Zmiana</th></tr>";
+                }
+                while($row=mysqli_fetch_array($wyslij)){
+                    echo "<tr><td>".$row['data']."</td><td>".$row['nauczyciel']." [Nauczyciel] (login: ".$_SESSION['login'].")</td><td>".$row['typ']."</td><td>".$row['zmiana']."</td></tr>";
+                }
+                echo "</table>";
+
+
                 if(isset($_POST['update'])){
                     
-                    $ocena=$_POST['ocena'];
+                    $nowa_ocena=$ocena=$_POST['ocena'];
                     if($ocena=="1+"){
                         $ocena=1.5;
                     }else if($ocena=="2-"){
@@ -211,6 +228,10 @@ if (!isset($_SESSION['zalogowany'])){
                         $ocena=0.01;
                     }else if($ocena=="zw"){
                         $ocena=0.02;
+                    }else if($ocena=="np"){
+                        $ocena=0.03;
+                    }else if($ocena=="nu"){
+                        $ocena=0.04;
                     }
             
 
@@ -220,6 +241,7 @@ if (!isset($_SESSION['zalogowany'])){
                     $wyslij1=mysqli_query($polaczenie,$zapytanie1);
                     while($row1=mysqli_fetch_array($wyslij1)){
                         $id_kategorii=$row1['id_kategorii'];
+                        $nowa_kategoria=$_POST['kategoria'];
                     }
 
                     $zapytanie1="SELECT waga from kategorie_ocen where nazwa_kategorii='".$_POST['kategoria']."';";
@@ -254,19 +276,33 @@ if (!isset($_SESSION['zalogowany'])){
                         $id_nauczyciela=$row20[0];
                     }
 
-                    echo $zapytanie20;
+
                     $zapytanie11="UPDATE oceny SET id_nauczyciela=$id_nauczyciela, id_kategorii=$id_kategorii,semestr=$semestr,ocena=$ocena,waga=$waga,data='$data',komentarz='$komentarz',nie_licz=$nie_licz WHERE id_oceny=$id_oceny;";
-                    
+                    $zapytanko="INSERT INTO `changelog`(`id`, id_dane, `typ`, `zmiana`, `data`, `zmieniajacy`) VALUES (null, $id_oceny, 'Zmiana',' <b>Ocena:</b> <i>$stara_ocena => $nowa_ocena </i><br><b>Kategoria:</b> <i>$stara_kategoria => $nowa_kategoria</i><br><b>Data:</b> <i>$stara_data => $data</i><br><b>Komentarz:</b> <i>$stary_komentarz => $komentarz</i>','$data',$id_nauczyciela);";
+    
                     $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
+                    $wyslij11=mysqli_query($polaczenie,$zapytanko);  
                     header("Location: http://localhost/dziennik_lekcyjny/widok_ocen.php");
                     exit;
                 }
                 ?>
                 <?php
                     if(isset($_POST['usun'])){
+                            
+                        $zapytanie20="SELECT id_nauczyciela from nauczyciele where login='".$_SESSION['login']."';";
+                        $wyslij20=mysqli_query($polaczenie,$zapytanie20);
+                        while($row20=mysqli_fetch_array($wyslij20)){
+                        $id_nauczyciela=$row20[0];
+                    }
                         $zapytanie11="DELETE FROM oceny WHERE id_oceny=$id_oceny;";
-                        echo $zapytanie11;
                         $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
+
+                        $zapytanie11="DELETE FROM changelog WHERE id_dane=$id_oceny;";
+                        $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
+
+                        $zapytanie11="INSERT INTO `changelog`(`id`, `typ`, `zmiana`, `data`, `zmieniajacy`) VALUES ($id_oceny,'usunięcie','Usunieto ocenę o id: $id_oceny','$data',$id_nauczyciela);";
+                        $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
+
                         header("Location: http://localhost/dziennik_lekcyjny/widok_ocen.php");
                         exit;
                     }             

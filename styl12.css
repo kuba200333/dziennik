@@ -25,7 +25,7 @@ body{
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    height: 15%;
+    height: 7%;
     float: left;
     color: white;
 }
@@ -39,7 +39,7 @@ body{
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    height: 15%;
+    height: 7%;
     float: right;
     color: white;
 }
@@ -47,7 +47,7 @@ body{
 
 #glowny{
     clear: both;
-    height: 75%;
+    height: 86%;
     width: 100%;
     padding: 10px;
     background-color: rgb(216, 205, 172);
@@ -59,7 +59,7 @@ body{
 
 #stopka{
     clear: both;
-    height: 10%;
+    height: 7%;
     top: 0;
     left: 0;
     padding: 0 3rem;
@@ -71,7 +71,7 @@ body{
     color: white;
 }
 #glowny table{
-    width: 60%;
+    width: 70%;
     border: 1px solid white;
     border-collapse: collapse;
     margin: auto;
@@ -112,7 +112,7 @@ input{
 p>i{
     color: red;
 }
-span.box {
+span.ocena {
     height: 15px;
     line-height: 15px;
     min-width: 20px;
@@ -125,19 +125,19 @@ span.box {
     color: #000000;
 }
 
-span.box a {
+span.ocena a {
     color: #000000;
 }
 
-span.box.positive-behaviour {
+span.ocena.positive-behaviour {
    background-color: #8ae234;
 }
 
-span.box.negative-behaviour {
+span.ocena.negative-behaviour {
    background-color: #ffa07a;
 }
 
-span.box-mapping {
+span.ocena-mapping {
     height: 11px;
     width: 11px;
     min-width: 11px;
@@ -161,4 +161,7 @@ input, select, option{
 }
 #naglowek1 a{
     color: white;
+}
+a[title]:hover::after {
+    background-color: yellow;
 }

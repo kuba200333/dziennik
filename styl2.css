@@ -1,7 +1,7 @@
 *, *::before, *::after{
     box-sizing: border-box;
     font-family: sans-serif;
-    color: white;
+
 }
 body{
     padding: 0;
@@ -24,6 +24,7 @@ body{
     align-items: center;
     height: 10%;
     background-color: rgb(253, 144, 61);
+    
 }
 
 #menu a{
@@ -73,7 +74,7 @@ body{
     text-align: center;
     position: relative;
     background-color: #1F2232;
-    
+    color: white;
 }
 #glowny1 p#baner{
     margin: 0;
@@ -85,18 +86,39 @@ body{
     font-size: 75px;
     font-family: Courier;
 }
-
+a{
+    color: white;
+}
 #glowny2{
-    height: 50%;
+    height: 65%;
     width: 100%;
-    background-image: url("szkola.png");
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    -moz-background-size: 100% 100%;
-
+    margin: auto;
+    background-color: rgb(216, 205, 172);
+    text-align: center;
+    overflow: auto;
+}
+#glowny2 table{
+    width: 50%;
+    border: 1px solid white;
+    border-collapse: collapse;
+    margin: auto;
+    color: #1F2232;
+    
+}
+td{
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+    color: #1F2232;
+    padding: 2px;
+}
+th{
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+    color: #1F2232;
+    padding: 10px;
 }
 #stopka{
-    height: 20%;
+    height: 5%;
     width: 100%;
     background-color: #1F2232;
     top: 0;
@@ -108,8 +130,12 @@ body{
     justify-content: flex-end;
     align-items: center;
     height: 20%;
+    color: white;
 }
 #add{
     text-align: center;
     color: red;
+}
+.center{
+    text-align: center;
 }

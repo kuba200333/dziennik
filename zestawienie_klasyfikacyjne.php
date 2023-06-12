@@ -111,7 +111,7 @@ if (!isset($_SESSION['zalogowany'])){
                     
                         echo "<tr><td>nieklasyfikowanych</td><td>".$ilu_z_nk."</td></table><br>";
 
-                        $zapytanie5="SELECT concat(u.nazwisko_ucznia, ' ',u.imie_ucznia) as uczen, p.nazwa_przedmiotu as przedmiot FROM `oceny` o inner join uczniowie u on o.id_ucznia=u.id_ucznia inner join przedmioty p on o.id_przedmiotu=p.id_przedmiotu where o.ocena= 0.01 and o.id_kategorii=8 and u.id_klasy=$id_klasy;";
+                        $zapytanie5="SELECT concat(u.nazwisko_ucznia, ' ',u.imie_ucznia) as uczen, p.nazwa_przedmiotu as przedmiot FROM `oceny` o inner join uczniowie u on o.id_ucznia=u.id_ucznia inner join przedmioty p on o.id_przedmiotu=p.id_przedmiotu where round(o.ocena,2)= 0.01 and o.id_kategorii=8 and u.id_klasy=$id_klasy;";
                         $wyslij5=mysqli_query($polaczenie,$zapytanie5);  
 
                         if ($wyslij5->num_rows>0){
@@ -272,8 +272,7 @@ if (!isset($_SESSION['zalogowany'])){
                             echo "<tr><td class='srodek' colspan='4'>Brak</td></tr></table><br>";
                         }
 
-                        $zapytanie17="SELECT DISTINCT concat(u.nazwisko_ucznia, ' ', u.imie_ucznia) as uczen, z.ocena as zachowanie from frekwencja f inner join uczniowie u on u.id_ucznia=f.id_ucznia 
-                        left OUTER JOIN oceny_zachowanie z on f.id_ucznia=z.id_ucznia where f.typ_ob not in('nb','u') and f.semestr=1 and u.id_klasy=$id_klasy;";
+                        $zapytanie17="SELECT f.id_ucznia, concat(u.nazwisko_ucznia,' ',u.imie_ucznia) as uczen, k.nazwa_klasy as klasa, SUM(CASE WHEN typ_ob IN ('ob', 'zw', 'sp') THEN 1 ELSE 0 END) AS obecne, SUM(CASE WHEN typ_ob IN ('nb', 'u') THEN 1 ELSE 0 END) AS nieobecne, SUM(CASE WHEN typ_ob = 'u' THEN 1 ELSE 0 END) AS usprawiedliwione, SUM(CASE WHEN typ_ob = 'zw' THEN 1 ELSE 0 END) AS zwolnione, SUM(CASE WHEN typ_ob = 'sp' THEN 1 ELSE 0 END) AS spoznione, (SUM(CASE WHEN typ_ob IN ('ob', 'zw', 'sp') THEN 1 ELSE 0 END) / (SUM(CASE WHEN typ_ob IN ('ob', 'zw', 'sp') THEN 1 ELSE 0 END) + SUM(CASE WHEN typ_ob IN ('nb', 'u') THEN 1 ELSE 0 END))) * 100 AS frekwencja_procentowo FROM frekwencja f inner join uczniowie u on u.id_ucznia=f.id_ucznia inner join klasy k on k.id_klasy=u.id_klasy where f.semestr=1 and u.id_klasy= $id_klasy GROUP BY f.id_ucznia HAVING frekwencja_procentowo > 99.99;";
                         $wyslij17=mysqli_query($polaczenie,$zapytanie17);
 
                         echo "<table><tr><td colspan='4' class='srodek'><b>Uczniowie z frekwencją powyżej 99,99%</b></td></tr>";
@@ -281,22 +280,8 @@ if (!isset($_SESSION['zalogowany'])){
                         if ($wyslij17->num_rows>0){
                             $x=1;
                             while($row17=mysqli_fetch_array($wyslij17)){
-                                echo "<td>".$x++."</td><td>".$row17[0]."</td><td>100%</td><td>";
-                                if($row17[1]==6){
-                                    echo "wzorowe";
-                                }else if($row17[1]==5){
-                                    echo "bardzo dobre";
-                                }else if($row17[1]==4){
-                                    echo "dobre";
-                                }else if($row17[1]==3){
-                                    echo "poprawne";
-                                }else if($row17[1]==2){
-                                    echo "nieodpowiednie";
-                                }else if($row17[1]==1){
-                                    echo "naganne";
-                                }else{
-                                    echo $row17[1];
-                                }
+                                echo "<td>".$x++."</td><td>".$row17[1]."</td><td>100%</td><td>";
+                                
 
                                 echo"</td></tr>";
                             }
@@ -382,7 +367,7 @@ if (!isset($_SESSION['zalogowany'])){
                         echo "<tr><td>nieklasyfikowanych</td><td>".$ilu_z_nk."</td></table><br>";
 
                         $zapytanie5="SELECT concat(u.nazwisko_ucznia, ' ',u.imie_ucznia) as uczen, p.nazwa_przedmiotu as przedmiot FROM `oceny` o inner join uczniowie u on o.id_ucznia=u.id_ucznia 
-                        inner join przedmioty p on o.id_przedmiotu=p.id_przedmiotu where o.ocena= 0.01 and o.id_kategorii=7 and u.id_klasy=$id_klasy;";
+                        inner join przedmioty p on o.id_przedmiotu=p.id_przedmiotu where round(o.ocena,2)= 0.01 and o.id_kategorii=7 and u.id_klasy=$id_klasy;";
                         $wyslij5=mysqli_query($polaczenie,$zapytanie5);  
 
                         if ($wyslij5->num_rows>0){
@@ -548,8 +533,7 @@ if (!isset($_SESSION['zalogowany'])){
                             echo "<tr><td class='srodek' colspan='4'>Brak</td></tr></table><br>";
                         }
 
-                        $zapytanie17="SELECT concat(u.nazwisko_ucznia, ' ', u.imie_ucznia) as uczen, z.ocena as zachowanie from frekwencja f inner join uczniowie u on u.id_ucznia=f.id_ucznia 
-                        left OUTER JOIN oceny_zachowanie z on f.id_ucznia=z.id_ucznia where f.typ_ob not in('nb','u') and u.id_klasy=$id_klasy;";
+                        $zapytanie17="SELECT f.id_ucznia, concat(u.nazwisko_ucznia,' ',u.imie_ucznia) as uczen, k.nazwa_klasy as klasa, SUM(CASE WHEN typ_ob IN ('ob', 'zw', 'sp') THEN 1 ELSE 0 END) AS obecne, SUM(CASE WHEN typ_ob IN ('nb', 'u') THEN 1 ELSE 0 END) AS nieobecne, SUM(CASE WHEN typ_ob = 'u' THEN 1 ELSE 0 END) AS usprawiedliwione, SUM(CASE WHEN typ_ob = 'zw' THEN 1 ELSE 0 END) AS zwolnione, SUM(CASE WHEN typ_ob = 'sp' THEN 1 ELSE 0 END) AS spoznione, (SUM(CASE WHEN typ_ob IN ('ob', 'zw', 'sp') THEN 1 ELSE 0 END) / (SUM(CASE WHEN typ_ob IN ('ob', 'zw', 'sp') THEN 1 ELSE 0 END) + SUM(CASE WHEN typ_ob IN ('nb', 'u') THEN 1 ELSE 0 END))) * 100 AS frekwencja_procentowo FROM frekwencja f inner join uczniowie u on u.id_ucznia=f.id_ucznia inner join klasy k on k.id_klasy=u.id_klasy where f.semestr=2 and u.id_klasy= $id_klasy GROUP BY f.id_ucznia HAVING frekwencja_procentowo > 99.99;";
                         $wyslij17=mysqli_query($polaczenie,$zapytanie17);
 
                         echo "<table><tr><td colspan='4' class='srodek'><b>Uczniowie z frekwencją powyżej 99,99%</b></td></tr>";
@@ -557,22 +541,8 @@ if (!isset($_SESSION['zalogowany'])){
                         if ($wyslij17->num_rows>0){
                             $x=1;
                             while($row17=mysqli_fetch_array($wyslij17)){
-                                echo "<td>".$x++."</td><td>".$row17[0]."</td><td>100%</td><td>";
-                                if($row17[1]==6){
-                                    echo "wzorowe";
-                                }else if($row17[1]==5){
-                                    echo "bardzo dobre";
-                                }else if($row17[1]==4){
-                                    echo "dobre";
-                                }else if($row17[1]==3){
-                                    echo "poprawne";
-                                }else if($row17[1]==2){
-                                    echo "nieodpowiednie";
-                                }else if($row17[1]==1){
-                                    echo "naganne";
-                                }else{
-                                    echo $row17[1];
-                                }
+                                echo "<td>".$x++."</td><td>".$row17[1]."</td><td>100%</td><td>";
+                              
 
                                 echo"</td></tr>";
                             }

@@ -30,8 +30,8 @@ if ($_SESSION['admin'] !=1){
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
 
             echo "<table>";
-            echo "<tr><td colspan='2' class='kolumna3'></td></tr>";
-            echo "<tr><td class='kolumna1'>klasy:</td><td class='kolumna2'><select name='klasy' required>";
+            echo "<tr><td colspan='2' class='3'></td></tr>";
+            echo "<tr><td class='1'>klasy:</td><td class='2'><select name='klasy' required>";
             echo "<option value=''</option>";
             while($row1=mysqli_fetch_array($wyslij1)){
                 echo "<option>".$row1['skrot_klasy']."</option>";
@@ -41,7 +41,7 @@ if ($_SESSION['admin'] !=1){
             $zapytanie="SELECT nazwa_przedmiotu FROM przedmioty where nazwa_przedmiotu != 'zachowanie' order by nazwa_przedmiotu asc;";
             $wyslij=mysqli_query($polaczenie,$zapytanie);
     
-            echo "<tr><td class='kolumna1'>przedmiot:</td><td class='kolumna2'><select name='przedmiot' required>";
+            echo "<tr><td class='1'>przedmiot:</td><td class='2'><select name='przedmiot' required>";
             echo "<option value=''</option>";
             while($row=mysqli_fetch_array($wyslij)){
                 echo "<option>".$row[0]."</option>";
@@ -51,7 +51,7 @@ if ($_SESSION['admin'] !=1){
             $zapytanie2="SELECT concat(nauczyciele.nazwisko, ' ', nauczyciele.imie) as nauczyciel FROM nauczyciele order by nauczyciel asc;";
             $wyslij2=mysqli_query($polaczenie,$zapytanie2);
     
-            echo "<tr><td class='kolumna1'>nauczyciel:</td><td class='kolumna2'><select name='nauczyciel' required>";
+            echo "<tr><td class='1'>nauczyciel:</td><td class='2'><select name='nauczyciel' required>";
             echo "<option value=''</option>";
             while($row2=mysqli_fetch_array($wyslij2)){
                 echo "<option>".$row2[0]."</option>";
@@ -62,7 +62,7 @@ if ($_SESSION['admin'] !=1){
             mysqli_close($polaczenie);
 
         ?>
-        <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
+        <tr class='inside'><td class="3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
         </table>
 
     </form></div> 

@@ -1,0 +1,217 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+    font-family: Helvetica;
+    box-sizing: border-box;
+    text-decoration: none;
+    
+
+}
+body{
+    padding: 0;
+    margin: 0;
+    background-color: #C3C3C3;
+
+}
+#kontener {
+    height: 100vh;
+}
+#naglowek1{
+    width: 50%;
+    top: 0;
+    left: 0;
+    padding: 0 3rem;
+    background-color: #1F2232;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 8%;
+    float: left;
+    color: white;
+}
+#naglowek1 a{
+    color: white;
+}
+#naglowek2{
+    width: 50%;
+    top: 0;
+    left: 0;
+    padding: 0 3rem;
+    background-color: #1F2232;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 8%;
+    float: right;
+    color: white;
+}
+#wybierz{
+    clear: both;
+    padding: 10px;
+    height: 10%;
+    width: 100%;
+    background-color: rgb(216, 205, 172);
+    border: 1px solid white;
+
+}
+#glowny{
+    
+    height: 74%;
+    background-color: rgb(216, 205, 172);
+    padding: 10px;
+    border: 1px solid white;
+    overflow: auto;
+    text-align: center;
+
+}
+
+#glowny1{
+    
+    height: 69%;
+    width: 50%;
+    background-color: rgb(216, 205, 172);
+    float: left;
+    padding: 10px;
+    border: 1px solid white;
+    overflow: auto;
+    text-align: center;
+
+}
+#glowny2{
+    padding: 10px;
+    height: 69%;
+    width: 50%;
+    background-color: rgb(216, 205, 172);
+    float: left;
+    border: 1px solid white;
+    overflow: auto;
+    text-align: center;
+    
+}
+#stopka{
+    clear: both;
+    height: 8%;
+    top: 0;
+    left: 0;
+    padding: 0 3rem;
+    background-color: #1F2232;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+
+}
+#glowny table{
+    width: 90%;
+    border: 1px solid white;
+    border-collapse: collapse;
+    margin: auto;
+    color: #1F2232;
+    font-size: 12px;
+    
+}
+
+#glowny1 table{
+    width: 100%;
+    border: 1px solid white;
+    border-collapse: collapse;
+
+    color: #1F2232;
+
+    
+}
+#glowny2 table{
+    width: 100%;
+    border: 1px solid white;
+    border-collapse: collapse;
+
+    color: #1F2232;
+    
+}
+
+
+td{
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+    color: #1F2232;
+    padding: 3px;
+
+}
+th{
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+    color: #1F2232;
+    padding: 10px;
+}
+.srodek{
+    text-align: center;
+}
+h1{
+    text-align: center;
+    
+}
+#stopka a{
+    color: white;
+}
+#add{
+    text-align: center;
+    color: red;
+}
+span.ocena {
+    height: 15px;
+    line-height: 15px;
+    min-width: 20px;
+    min-height: 20px;
+    display: inline-block;
+    margin: 0 3px;
+    margin-top: 1px;
+    text-align: center;
+    padding: 2px 3px;
+    color: #000000;
+}
+
+span.ocena a {
+    color: #000000;
+}
+
+span.ocena.positive-behaviour {
+   background-color: #8ae234;
+}
+
+span.ocena.negative-behaviour {
+   background-color: #ffa07a;
+}
+
+span.ocena-mapping {
+    height: 11px;
+    width: 11px;
+    min-width: 11px;
+    display: inline-block;
+    margin: 0 3px;
+    margin-top:1px;
+    text-align: center;
+    padding: 4px 4px;
+}
+.zielonybutton{
+    background-color: #8ae234;
+    border-radius: 10px;
+    border: 1px solid gray;
+}
+input, select, option{
+    color: #000000;
+    
+}
+.lewy{
+    text-align: left;
+}
+#naglowek1 a{
+    color: white;
+}
+td #ocenka{
+    min-height: 28px;
+}
+hr{
+    border: 1px black solid;
+}

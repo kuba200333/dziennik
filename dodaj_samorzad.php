@@ -26,7 +26,7 @@ if (!isset($_SESSION['zalogowany'])){
             $zapytanie11="SELECT skrot_klasy FROM klasy;";
             $wyslij11=mysqli_query($polaczenie,$zapytanie11);  
             echo "<table>";
-            echo "<tr><td class='kolumna1'>Wybierz klasę:</td> <td class='kolumna2'><select name='klasy' onchange='this.form.submit()'>";
+            echo "<tr><td class='1'>Wybierz klasę:</td> <td class='2'><select name='klasy' onchange='this.form.submit()'>";
             echo "<option value=''</option>";
             while($row11=mysqli_fetch_array($wyslij11)){
                 echo "<option>".$row11['skrot_klasy']."</option>";
@@ -38,7 +38,7 @@ if (!isset($_SESSION['zalogowany'])){
             
             if(empty($_POST['klasy'])){
                 echo <<<END
-                <tr class='inside'><td class='kolumna3' colspan='2'><input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
+                <tr class='inside'><td class='3' colspan='2'><input type='submit' value='Zamknij' name='zamknij' onclick="window.open('', '_self', ''); window.close();"></td></tr>
                 END;
                 }
             echo "</table>";    
@@ -60,8 +60,8 @@ if (!isset($_SESSION['zalogowany'])){
 
             $wyslij=mysqli_query($polaczenie,$zapytanie);
             
-            echo "<tr><td class='kolumna1'>Wybierz ucznia</td>";
-            echo "<td class='kolumna2'><select name='uczniowie'>";
+            echo "<tr><td class='1'>Wybierz ucznia</td>";
+            echo "<td class='2'><select name='uczniowie'>";
             echo "<option></option>";
             while($row=mysqli_fetch_array($wyslij)){
                 echo "<option>".$row['uczen']."</option>";
@@ -70,8 +70,8 @@ if (!isset($_SESSION['zalogowany'])){
 
             $zapytanie1="SELECT * FROM `funkcje`";
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);
-            echo "<tr><td class='kolumna1'>Wybierz funkcję</td>";
-            echo "<td class='kolumna2'><select name='funkcje'>";
+            echo "<tr><td class='1'>Wybierz funkcję</td>";
+            echo "<td class='2'><select name='funkcje'>";
             echo "<option></option>";
             while($row1=mysqli_fetch_array($wyslij1)){
                 echo "<option>".$row1['nazwa']."</option>";
@@ -79,7 +79,7 @@ if (!isset($_SESSION['zalogowany'])){
             echo "</select></td></tr>";
 
             echo<<<END
-            <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
+            <tr class='inside'><td class="3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
             END;
             echo "</table>";
             }

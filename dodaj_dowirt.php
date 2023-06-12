@@ -29,13 +29,13 @@ if (!isset($_SESSION['zalogowany'])){
 
 
             echo "<table>";
-            echo "<tr><td colspan='2' class='kolumna3'></td></tr>";
+            echo "<tr><td colspan='2' class='3'></td></tr>";
 
             if(!isset($_POST['klasyall'])){
             $zapytanie1="SELECT skrot_klasy FROM klasy where wirt=0 order by skrot_klasy asc ;";
             $wyslij1=mysqli_query($polaczenie,$zapytanie1);  
 
-            echo "<tr><td class='kolumna1'>klasy:</td><td class='kolumna2'><select name='klasyall' required onchange='this.form.submit()' >";
+            echo "<tr><td class='1'>klasy:</td><td class='2'><select name='klasyall' required onchange='this.form.submit()' >";
             echo "<option value=''</option>";
             while($row1=mysqli_fetch_array($wyslij1)){
                 echo "<option>".$row1['skrot_klasy']."</option>";
@@ -47,7 +47,7 @@ if (!isset($_SESSION['zalogowany'])){
             $wyslij10=mysqli_query($polaczenie,$zapytanie10);  
 
            
-            echo "<tr><td class='kolumna1'>wirtualna klasa:</td><td class='kolumna2'><select name='klasy' required>";
+            echo "<tr><td class='1'>wirtualna klasa:</td><td class='2'><select name='klasy' required>";
             echo "<option value=''</option>";
             while($row10=mysqli_fetch_array($wyslij10)){
                 echo "<option>".$row10['skrot_klasy']."</option>";
@@ -63,7 +63,7 @@ if (!isset($_SESSION['zalogowany'])){
             $zapytanie2="SELECT concat(uczniowie.nazwisko_ucznia, ' ', uczniowie.imie_ucznia) as uczen FROM uczniowie  where id_klasy=$id_klasy order by uczen asc;";
             $wyslij2=mysqli_query($polaczenie,$zapytanie2);
     
-            echo "<tr><td class='kolumna1'>uczeń:</td><td class='kolumna2'><select name='uczen' required>";
+            echo "<tr><td class='1'>uczeń:</td><td class='2'><select name='uczen' required>";
             echo "<option value=''</option>";
             while($row2=mysqli_fetch_array($wyslij2)){
                 echo "<option>".$row2[0]."</option>";
@@ -75,7 +75,7 @@ if (!isset($_SESSION['zalogowany'])){
             mysqli_close($polaczenie);
 
         ?>
-        <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
+        <tr class='inside'><td class="3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
         </table>
 
     </form></div> 

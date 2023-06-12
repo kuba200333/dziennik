@@ -4,7 +4,7 @@
     color: white;
     box-sizing: border-box;
     text-decoration: none;
-    text-align: center;
+    
     
 }
 body{
@@ -74,6 +74,7 @@ body{
     border-collapse: collapse;
     margin: 0 auto;
     color: #1F2232;
+    font-size: 12px;
     
 }
 td{
@@ -114,4 +115,53 @@ select option{
 #info{
     width: 120px;
     color: black;
+}
+span.ocena {
+    height: 15px;
+    line-height: 15px;
+    min-width: 20px;
+    min-height: 20px;
+    display: inline-block;
+    margin: 0 3px;
+    margin-top: 1px;
+    text-align: center;
+    padding: 2px 3px;
+    color: #000000;
+}
+
+span.ocena a {
+    color: #000000;
+}
+
+span.ocena.positive-behaviour {
+   background-color: #8ae234;
+}
+
+span.ocena.negative-behaviour {
+   background-color: #ffa07a;
+}
+
+span.ocena-mapping {
+    height: 11px;
+    width: 11px;
+    min-width: 11px;
+    display: inline-block;
+    margin: 0 3px;
+    margin-top:1px;
+    text-align: center;
+    padding: 4px 4px;
+}
+td #ocenka{
+    min-height: 28px;
+    
+}
+#srodek{
+    text-align: center;
+}
+.zielonybutton{
+    background-color: #8ae234;
+    border-radius: 10px;
+    border: 1px solid gray;
+   
+    
 }

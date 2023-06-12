@@ -25,11 +25,11 @@ if ($_SESSION['admin'] !=1){
         <h4 class="inside">Dodaj kategorie</h4>
         <table>
         <form action="" method="post">
-            <tr><td class='kolumna3' colspan="2"></td></tr>
-            <tr><td class='kolumna1'>Nazwa kategorii:</td><td class='kolumna2'><input name="nazwa kategorii" type="text" placeholder="Nazwa kategorii" required>  </td></tr>
-            <tr><td class='kolumna1'>Skrót kategorii:</td><td class='kolumna2'><input name="skrot_kategorii" type="text" placeholder="Skrót kategorii" required>  </td></tr>
-            <tr><td class='kolumna1'>Waga:</td><td class='kolumna2'><input name="waga" type="number" min=0 max=10 placeholder="Waga" required>  </td></tr>
-            <tr><td class='kolumna1'>Kolor:</td><td class='kolumna2'>
+            <tr><td class='3' colspan="2"></td></tr>
+            <tr><td class='1'>Nazwa kategorii:</td><td class='2'><input name="nazwa kategorii" type="text" placeholder="Nazwa kategorii" required>  </td></tr>
+            <tr><td class='1'>Skrót kategorii:</td><td class='2'><input name="skrot_kategorii" type="text" placeholder="Skrót kategorii" required>  </td></tr>
+            <tr><td class='1'>Waga:</td><td class='2'><input name="waga" type="number" min=0 max=10 placeholder="Waga" required>  </td></tr>
+            <tr><td class='1'>Kolor:</td><td class='2'>
                 <select name="kolor">
                     <option value="" selected dissabled hidden></option>
                     <option class="khaki">khaki</option>
@@ -64,7 +64,7 @@ if ($_SESSION['admin'] !=1){
                     <option class="lawngreen">lawngreen</option>
                 </select>
             </td></tr>
-            <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
+            <tr class='inside'><td class="3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
         </table>
         <?php
         if(!empty($_POST['wysylacz'])){

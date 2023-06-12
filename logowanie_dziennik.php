@@ -69,6 +69,16 @@
             $_SESSION['admin']=0; 
         }
 
+        $zapytanie="SELECT k.skrot_klasy FROM klasy k inner join nauczyciele n on k.id_nauczyciela=n.id_nauczyciela where n.login='$l';";
+        $wyslij=mysqli_query($polaczenie,$zapytanie);
+        while($row=mysqli_fetch_array($wyslij)){
+            $wych=$row[0];
+        }
+        if($wych!=null){
+            $_SESSION['wych']=$wych; 
+        }
+
+
         $polaczenie->close();
 
 

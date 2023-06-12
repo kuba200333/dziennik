@@ -3,6 +3,9 @@ session_start();
 if (!isset($_SESSION['zalogowany'])){
     header("Location: index.php");
 }
+if ($_SESSION['admin'] !=1){
+    header("Location: dziennik.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -56,28 +59,28 @@ if (!isset($_SESSION['zalogowany'])){
         echo"
         
         <table><form action='' method='post'>
-        <tr><td class='kolumna3' colspan='2'></td></tr>
-        <tr><td class='kolumna1'>klasa:</td> <td class='kolumna2'>".$nazwa_klasy."</td></tr>";
-        echo "<tr><td class='kolumna1'>przedmiot:</td> <td class='kolumna2'>".$nazwa_przedmiotu."</td></tr>";
+        <tr><td class='3' colspan='2'></td></tr>
+        <tr><td class='1'>klasa:</td> <td class='2'>".$nazwa_klasy."</td></tr>";
+        echo "<tr><td class='1'>przedmiot:</td> <td class='2'>".$nazwa_przedmiotu."</td></tr>";
         $d=mktime();
         $date=date("Y-m-d", $d);
 
-        echo "<tr><td class='kolumna1'>Wybierz datę: </td><td class='kolumna2'><input type='date' value='$date' name='data' required></td></tr>";
+        echo "<tr><td class='1'>Wybierz datę: </td><td class='2'><input type='date' value='$date' name='data' required></td></tr>";
         echo "<option value=''</option>";
 
         $zapytanie5="SELECT nazwa_kategorii FROM `kategorie_ocen` where id_kategorii not in (9,10) order by nazwa_kategorii asc;";
             
         $wyslij5=mysqli_query($polaczenie,$zapytanie5);
         
-        echo "<tr><td class='kolumna1'>kategoria:</td> <td class='kolumna2'><select name='kategoria'  id='info'  required>";
+        echo "<tr><td class='1'>kategoria:</td> <td class='2'><select name='kategoria'  id='info'  required>";
         echo "<option value=''</option>";
         while($row5=mysqli_fetch_array($wyslij5)){
             echo "<option>".$row5['nazwa_kategorii']."</option>";
         }
         echo "</select></td></tr>";
-        echo "<tr><td class='kolumna1'>komentarz: </td><td class='kolumna2'><input type='text' id='koment' name='komentarz' onchange='komentarz_ser()'></td></tr>
+        echo "<tr><td class='1'>komentarz: </td><td class='2'><input type='text' id='koment' name='komentarz' onchange='komentarz_ser()'></td></tr>
         
-        <tr><td class='kolumna3' colspan='2'></td></tr>
+        <tr><td class='3' colspan='2'></td></tr>
         </table><br>";
 
         echo "<table>
@@ -88,7 +91,19 @@ if (!isset($_SESSION['zalogowany'])){
         $id_klasy=$_POST['id_klasy'];
         $id_przedmiot=$_POST['id_przedmiot'];
 
-        $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as duczen FROM uczniowie where id_klasy=$id_klasy UNION SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen FROM wirtualne_klasy where id_klasy=$id_klasy ORDER BY duczen ASC;";
+        $zapytanie10="SELECT wirt FROM klasy where id_klasy=$id_klasy;";
+
+                $wyslij10=mysqli_query($polaczenie,$zapytanie10);
+                while($row10=mysqli_fetch_array($wyslij10)){
+                    $wirt=$row10[0];
+                }
+                if($wirt==0){
+                    $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as duczen FROM uczniowie where id_klasy=$id_klasy order by nazwisko_ucznia asc, imie_ucznia asc;";
+                }else{
+                    $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as duczen FROM wirtualne_klasy where id_klasy=$id_klasy order by nazwisko_ucznia asc, imie_ucznia asc;";
+
+                }
+        
 
         $wyslij=mysqli_query($polaczenie,$zapytanie);
         $x=1;
@@ -165,7 +180,7 @@ if (!isset($_SESSION['zalogowany'])){
             }
 
             foreach($tab as $keys=> $ocena){
-                $komentarz = $tab_kom[$keys];
+                $komentarz = mysqli_real_escape_string($polaczenie,$tab_kom[$keys]);
                 if($ocena=="1+"){
                     $ocena=1.5;
                 }else if($ocena=="2-"){

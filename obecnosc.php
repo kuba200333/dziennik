@@ -18,7 +18,7 @@ if (!isset($_SESSION['zalogowany'])){
 <body>
 <div id="kontener">
     <div id="naglowek1">
-        <a href="\dziennik_lekcyjny\moje_przedmioty.php">Powrót do nauczanych przedmiotów <br></a>
+    <a href="\dziennik_lekcyjny\dziennik.php">Powrót do strony głównej <br></a>
     </div>
 
     <div id="naglowek2">
@@ -30,14 +30,16 @@ if (!isset($_SESSION['zalogowany'])){
         
         <?php
         $d=mktime();
-        $date=date("Y-m-d", $d);    
+        $date=$_POST['data_lekcji'];   
+        $lekcja=$_POST['nr_lekcji'];
         echo"
         <table>
 
         <tr><td> Klasa:</td> <td>".$_POST['klasa']."</td></tr>";
         echo "<tr><td>przedmiot:</td> <td>".$_POST['nazwa_przedmiotu']."</td></tr>";
         echo "<tr><td >Wybierz datę: </td><td><input type='date' name='data' value='$date' required></td></tr>
-        <tr><td>Wybierz lekcje:  </td><td><input type='number' name='lekcja' min=1 max=8 required></td></tr>
+        <tr><td>Wybierz lekcje:  </td><td><input type='number' name='lekcja' min=1 max=8 value='$lekcja'required></td></tr>
+        <tr><td>Temat zajęć:  </td><td><input type='text' name='temat' required></td></tr>
 
         </table><br>";
 
@@ -49,8 +51,30 @@ if (!isset($_SESSION['zalogowany'])){
 
         $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
         $id_klasy=$_POST['id_klasy'];
-        $id_przedmiot=$_POST['id_przedmiot'];
-        $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as duczen from uczniowie where id_klasy=$id_klasy UNION SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as uczen from wirtualne_klasy where id_klasy=$id_klasy order by duczen asc;";
+        if(isset($_POST['id_klasy'])){
+            $_SESSION['id_klasy']=$id_klasy;
+        }
+        $zapytanie10="SELECT wirt FROM klasy where id_klasy=$id_klasy;";
+
+                $wyslij10=mysqli_query($polaczenie,$zapytanie10);
+                while($row10=mysqli_fetch_array($wyslij10)){
+                    $wirt=$row10[0];
+                }
+                if($wirt==0){
+                    $zapytanie="SELECT id_ucznia, concat(nazwisko_ucznia, ' ', imie_ucznia) as duczen, nr_dziennik from uczniowie where id_klasy=$id_klasy order by nr_dziennik asc;";
+                }else{
+                    $zapytanie="SELECT wk.id_ucznia, concat(wk.nazwisko_ucznia, ' ', wk.imie_ucznia) as duczen, u.nr_dziennik from wirtualne_klasy wk inner join uczniowie u on u.id_ucznia=wk.id_ucznia where wk.id_klasy=$id_klasy order by nr_dziennik asc;";
+
+                }
+
+                if(isset($_POST['id_przedmiot'])){
+                    $id_przedmiot=$_SESSION['id_przedmiot']=$_POST['id_przedmiot'];
+                  
+                }else{
+                    $id_przedmiot=$_SESSION['id_przedmiot'];
+                    
+                }
+       
 
         $wyslij=mysqli_query($polaczenie,$zapytanie);
         echo "<tr style='background-color: silver;' class='suma'>
@@ -59,8 +83,8 @@ if (!isset($_SESSION['zalogowany'])){
         ";
         $x=1;
         while($row=mysqli_fetch_array($wyslij)){
-            echo '<tr id="'.$row[0].'"><td>'.$x++.'.</td><td style="text-align:left;">'.$row['duczen'].'<input type="hidden" name="uczen['.$row[0].']"  value="'.$row[0].'"><input type="hidden" name="id_przedmiot" value="'.$id_przedmiot.'"></td>
-            <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="obecnosc" value="ob"></td><td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="niebecnosc" value="nb"></td>
+            echo '<tr id="'.$row[0].'"><td>'.$row['nr_dziennik'].'.</td><td style="text-align:left;">'.$row['duczen'].'<input type="hidden" name="uczen['.$row[0].']"  value="'.$row[0].'"><input type="hidden" name="id_przedmiot" value="'.$id_przedmiot.'"></td>
+            <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="obecnosc" value="ob" required oninvalid="this.setCustomValidity()"></td><td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="niebecnosc" value="nb"></td>
             <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="usprawiedliwione" value="u"></td>
             <td class="wyglad" ><input type="radio" name="frekwencja['.$row[0].']" id="zwolniony" value="zw"></td><td class="wyglad"><input type="radio" name="frekwencja['.$row[0].']" id="spoznienie" value="sp"></td></tr>';
         }
@@ -71,6 +95,7 @@ if (!isset($_SESSION['zalogowany'])){
         echo "</table>";
         echo '<input type="submit" name="submit"></td></form>';
 
+        
     
         if(isset($_POST['submit'])){
 
@@ -78,9 +103,11 @@ if (!isset($_SESSION['zalogowany'])){
             print_r($tab);
             $data=$_POST['data'];
             $lekcja=$_POST['lekcja'];
-            $id_przedmiot=$_POST['id_przedmiot'];
+            
+            $temat=$_POST['temat'];
             $login=$_SESSION['login'];
-
+            
+        
             $zapytanie20="SELECT id from semestry where '$data' between od and do;";
             $wyslij20=mysqli_query($polaczenie,$zapytanie20);
             while($row20=mysqli_fetch_array($wyslij20)){
@@ -98,10 +125,13 @@ if (!isset($_SESSION['zalogowany'])){
             
             foreach($tab as $key=> $value){
                 mysqli_query($polaczenie, "INSERT INTO frekwencja(id_frekwencji, id_ucznia, typ_ob, data, id_przedmiot, id_nauczyciel, nr_lekcji, semestr) VALUES (null,$key,'$value','$data', $id_przedmiot, $id_nauczyciela, $lekcja, $semestr);");
-                //echo"INSERT INTO frekwencja(id_frekwencji, id_ucznia, typ_ob, data, id_przedmiot, id_nauczyciel, nr_lekcj) VALUES (null,$key,'$value','$data', $id_przedmiot, $id_nauczyciela, $lekcja);";
+                
                 
             }
-            header("Location: http://localhost/dziennik_lekcyjny/moje_przedmioty.php");
+            $sql="INSERT INTO realizacja_programu(id, data, id_klasy, id_przedmiot, id_nauczyciel, temat, lekcja) VALUES (null,'$data',".$_SESSION['id_klasy'].", $id_przedmiot, $id_nauczyciela, '$temat', $lekcja)";
+            mysqli_query($polaczenie, $sql);
+echo $sql;
+            header("Location: http://localhost/dziennik_lekcyjny/dziennik.php");
         }
     ?>
 

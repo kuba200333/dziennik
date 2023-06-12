@@ -22,10 +22,10 @@ if ($_SESSION['admin'] !=1){
         <h4 class="inside">Dodaj przedmiot</h4>
         <table>
         <form action="" method="post">
-            <tr><td class='kolumna3' colspan="2"></td></tr>
-            <tr><td class='kolumna1'>Nazwa przedmiotu:</td><td class='kolumna2'><input name="nazwa przedmiotu" type="text" placeholder="Nazwa przedmiotu" required>  </td></tr>
-            <tr><td class='kolumna1'>Skrót przedmiotu:</td><td class='kolumna2'><input name="skrot_przedmiotu" type="text" placeholder="Skrót przedmiotu" required>  </td></tr>
-            <tr class='inside'><td class="kolumna3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
+            <tr><td class='3' colspan="2"></td></tr>
+            <tr><td class='1'>Nazwa przedmiotu:</td><td class='2'><input name="nazwa przedmiotu" type="text" placeholder="Nazwa przedmiotu" required>  </td></tr>
+            <tr><td class='1'>Skrót przedmiotu:</td><td class='2'><input name="skrot_przedmiotu" type="text" placeholder="Skrót przedmiotu" required>  </td></tr>
+            <tr class='inside'><td class="3" colspan="2"><input value="Dodaj" type="submit" name='wysylacz'>&nbsp<input type='submit' value='Zamknij' name="zamknij" onclick="window.open('', '_self', ''); window.close();"></td></tr>
         </table>
         <?php
         if(!empty($_POST['wysylacz'])){
